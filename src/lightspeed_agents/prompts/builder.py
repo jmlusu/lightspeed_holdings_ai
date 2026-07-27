@@ -92,7 +92,14 @@ class PromptBuilder:
         lines = ["## Owned Workflows"]
 
         for wf in owned:
-            steps = " -> ".join(wf.get("steps", []))
+            raw_steps = wf.get("steps", [])
+            step_ids = []
+            for s in raw_steps:
+                if isinstance(s, dict):
+                    step_ids.append(s.get("id", ""))
+                else:
+                    step_ids.append(str(s))
+            steps = " -> ".join(step_ids)
             lines.append(f"- **{wf['name']}:** {steps}")
 
         return "\n".join(lines)

@@ -98,3 +98,22 @@ def test_tasks_list_with_tasks():
     assert result.exit_code == 0
     assert "cto" in result.output
     assert "cfo" in result.output
+
+
+def test_workflows_list():
+    result = runner.invoke(app, ["workflows", "list"])
+    assert result.exit_code == 0
+    assert "daily-executive-briefing" in result.output
+    assert "software-development" in result.output
+
+
+def test_workflows_show():
+    result = runner.invoke(app, ["workflows", "show", "software-development"])
+    assert result.exit_code == 0
+    assert "Software Development" in result.output
+    assert "create_task" in result.output
+
+
+def test_workflows_show_not_found():
+    result = runner.invoke(app, ["workflows", "show", "nonexistent"])
+    assert result.exit_code == 1

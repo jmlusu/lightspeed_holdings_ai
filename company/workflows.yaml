@@ -2,42 +2,135 @@ workflows:
 
   - id: daily-executive-briefing
     name: Daily Executive Briefing
-    description: Generate CEO briefing
+    description: Generate CEO briefing with cross-department metrics
     owner: chief-of-staff
     steps:
-      - collect_metrics
-      - analyze_status
-      - generate_report
+      - id: collect_metrics
+        instruction: "Collect KPI metrics from all 7 departments"
+        assignee: coo
+        tier: T0
+        tags: [metrics, daily]
+
+      - id: analyze_status
+        instruction: "Analyze department status reports and flag anomalies"
+        assignee: chief-of-staff
+        tier: T1
+        depends_on: [collect_metrics]
+        tags: [analysis, daily]
+
+      - id: generate_report
+        instruction: "Generate executive briefing report with recommendations"
+        assignee: chief-of-staff
+        tier: T1
+        depends_on: [analyze_status]
+        tags: [report, daily]
 
   - id: software-development
     name: Software Development Workflow
-    description: Engineering delivery workflow
+    description: Engineering delivery workflow from task to deployment
     owner: cto
     steps:
-      - create_task
-      - assign_agent
-      - execute
-      - review
-      - deploy
+      - id: create_task
+        instruction: "Define and scope the engineering task"
+        assignee: lead-engineer
+        tier: T0
+        tags: [planning, engineering]
+
+      - id: assign_agent
+        instruction: "Assign task to appropriate specialist agent"
+        assignee: lead-engineer
+        tier: T0
+        depends_on: [create_task]
+        tags: [assignment, engineering]
+
+      - id: execute
+        instruction: "Implement the solution"
+        assignee: backend-engineer
+        tier: T0
+        depends_on: [assign_agent]
+        tags: [execution, engineering]
+
+      - id: review
+        instruction: "Code review and quality assurance"
+        assignee: lead-engineer
+        tier: T2
+        depends_on: [execute]
+        tags: [review, engineering]
+
+      - id: deploy
+        instruction: "Deploy to production"
+        assignee: backend-engineer
+        tier: T3
+        depends_on: [review]
+        tags: [deployment, engineering]
 
   - id: incident-response
     name: Incident Response Workflow
-    description: Handle system incidents
+    description: Handle system incidents from detection to postmortem
     owner: cto
     steps:
-      - detect
-      - escalate
-      - investigate
-      - resolve
-      - postmortem
+      - id: detect
+        instruction: "Detect and classify the incident severity"
+        assignee: backend-engineer
+        tier: T0
+        tags: [detection, incident]
+
+      - id: escalate
+        instruction: "Escalate to appropriate executives based on severity"
+        assignee: lead-engineer
+        tier: T1
+        depends_on: [detect]
+        tags: [escalation, incident]
+
+      - id: investigate
+        instruction: "Investigate root cause and impact"
+        assignee: backend-engineer
+        tier: T0
+        depends_on: [escalate]
+        tags: [investigation, incident]
+
+      - id: resolve
+        instruction: "Implement and verify the fix"
+        assignee: backend-engineer
+        tier: T2
+        depends_on: [investigate]
+        tags: [resolution, incident]
+
+      - id: postmortem
+        instruction: "Write postmortem and update procedures"
+        assignee: lead-engineer
+        tier: T1
+        depends_on: [resolve]
+        tags: [postmortem, incident]
 
   - id: hiring
     name: AI Agent Hiring Workflow
-    description: Add new agents
+    description: Add new AI agents to the organization
     owner: chief-of-staff
     steps:
-      - review_need
-      - register_agent
-      - generate_files
-      - validate
+      - id: review_need
+        instruction: "Review hiring need and define agent requirements"
+        assignee: chief-of-staff
+        tier: T1
+        tags: [review, hiring]
 
+      - id: register_agent
+        instruction: "Create agent specification and register in registry"
+        assignee: chief-of-staff
+        tier: T2
+        depends_on: [review_need]
+        tags: [registration, hiring]
+
+      - id: generate_files
+        instruction: "Generate agent config files and department entries"
+        assignee: lead-engineer
+        tier: T1
+        depends_on: [register_agent]
+        tags: [generation, hiring]
+
+      - id: validate
+        instruction: "Validate agent configuration and run tests"
+        assignee: lead-engineer
+        tier: T0
+        depends_on: [generate_files]
+        tags: [validation, hiring]
