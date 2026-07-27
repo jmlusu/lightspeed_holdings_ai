@@ -4,7 +4,6 @@ from lightspeed_agents.registry.registry import registry
 from lightspeed_agents.agents.loader import load_agents
 from lightspeed_agents.prompts.builder import PromptBuilder
 
-
 app = typer.Typer(help="Preview agent system prompts.")
 
 

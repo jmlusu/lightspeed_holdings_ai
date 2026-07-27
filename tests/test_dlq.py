@@ -26,7 +26,8 @@ def test_detect_stale_tasks(bus, dlq):
     bus.claim_task(task.id)
 
     bus.store.update_entry(
-        "inbox.json", task.id,
+        "inbox.json",
+        task.id,
         {"claimed_at": (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()},
     )
 
@@ -40,7 +41,8 @@ def test_move_to_dlq(bus, dlq):
     bus.claim_task(task.id)
 
     bus.store.update_entry(
-        "inbox.json", task.id,
+        "inbox.json",
+        task.id,
         {"claimed_at": (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()},
     )
 
@@ -55,7 +57,8 @@ def test_process_finds_and_fails_stale(bus, dlq):
     bus.claim_task(task.id)
 
     bus.store.update_entry(
-        "inbox.json", task.id,
+        "inbox.json",
+        task.id,
         {"claimed_at": (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()},
     )
 

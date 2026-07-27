@@ -12,3 +12,5 @@ build/
 memory/*.json
 .opencode/
 .venv/
+pytest_err.txt
+test_output*.txt

@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
-from typing import Callable, Optional
+from datetime import datetime, UTC
+from typing import Optional
 
 from lightspeed_agents.workflow.models import (
     Workflow,
@@ -10,11 +10,9 @@ from lightspeed_agents.workflow.models import (
 )
 from lightspeed_agents.workflow.loader import load_workflows, get_workflow
 from lightspeed_agents.message_bus.message_bus import MessageBus
-from lightspeed_agents.message_bus.task import Task
-from lightspeed_agents.message_bus.task_status import TaskStatus, TaskPriority
+from lightspeed_agents.message_bus.task_status import TaskPriority
 from lightspeed_agents.message_bus.file_store import FileStore
 from lightspeed_agents.memory.engine import MemoryEngine
-
 
 RUNS_FILE = "workflow_runs.json"
 
@@ -50,7 +48,7 @@ class WorkflowEngine:
 
         run = WorkflowRun(workflow_id=workflow_id)
         run.status = WorkflowStatus.RUNNING
-        run.started_at = datetime.now(timezone.utc).isoformat()
+        run.started_at = datetime.now(UTC).isoformat()
         run.touch()
 
         self._save_run(run)
@@ -73,10 +71,7 @@ class WorkflowEngine:
         return None
 
     def get_runs_by_workflow(self, workflow_id: str) -> list[WorkflowRun]:
-        return [
-            r for r in self._load_runs()
-            if r.workflow_id == workflow_id
-        ]
+        return [r for r in self._load_runs() if r.workflow_id == workflow_id]
 
     def get_all_runs(self) -> list[WorkflowRun]:
         return self._load_runs()
@@ -104,7 +99,7 @@ class WorkflowEngine:
         run.step_results[step_id] = {
             "status": "completed",
             "result": result,
-            "completed_at": datetime.now(timezone.utc).isoformat(),
+            "completed_at": datetime.now(UTC).isoformat(),
         }
 
         if step.task_id:
@@ -147,7 +142,7 @@ class WorkflowEngine:
         run.step_results[step_id] = {
             "status": "failed",
             "error": error,
-            "failed_at": datetime.now(timezone.utc).isoformat(),
+            "failed_at": datetime.now(UTC).isoformat(),
         }
         run.status = WorkflowStatus.FAILED
         run.touch()
@@ -216,7 +211,7 @@ class WorkflowEngine:
         steps = workflow.steps
         if run.current_step_index >= len(steps):
             run.status = WorkflowStatus.COMPLETED
-            run.completed_at = datetime.now(timezone.utc).isoformat()
+            run.completed_at = datetime.now(UTC).isoformat()
             run.touch()
             self._save_run(run)
             return
@@ -237,7 +232,11 @@ class WorkflowEngine:
                 instruction=step_def.instruction,
                 receiver_id=step_def.assignee,
                 sender_id=workflow.owner,
-                priority=TaskPriority.HIGH if step_def.requires_approval else TaskPriority.MEDIUM,
+                priority=(
+                    TaskPriority.HIGH
+                    if step_def.requires_approval
+                    else TaskPriority.MEDIUM
+                ),
                 tags=["workflow", workflow.id, step_def.id],
                 metadata={
                     "workflow_id": workflow.id,
@@ -252,7 +251,7 @@ class WorkflowEngine:
             run.step_results[step_def.id] = {
                 "status": "in_progress",
                 "task_id": task.id,
-                "started_at": datetime.now(timezone.utc).isoformat(),
+                "started_at": datetime.now(UTC).isoformat(),
             }
 
             if step_def.requires_approval:

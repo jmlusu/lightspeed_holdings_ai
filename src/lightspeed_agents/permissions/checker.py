@@ -1,5 +1,3 @@
-from typing import Optional
-
 from lightspeed_agents.models.agent import Agent
 from lightspeed_agents.permissions.tiers import ActionTier, TIER_RISK_LEVELS
 from lightspeed_agents.permissions.tool_registry import ToolRegistry
@@ -18,8 +16,10 @@ class PermissionChecker:
         tool_tier = self.tool_registry.get_tier(tool_name)
 
         if tool_name not in agent.tools and tool_name not in agent.permissions:
-            return False, tool_tier, (
-                f"Agent '{agent.id}' does not have access to tool '{tool_name}'"
+            return (
+                False,
+                tool_tier,
+                (f"Agent '{agent.id}' does not have access to tool '{tool_name}'"),
             )
 
         return True, tool_tier, ""

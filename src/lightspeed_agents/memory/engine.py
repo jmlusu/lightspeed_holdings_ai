@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 from lightspeed_agents.memory.models import MemoryEntry
 from lightspeed_agents.memory.filestore import FileStore
 from lightspeed_agents.memory.search import keyword_search
@@ -8,10 +6,13 @@ from lightspeed_agents.memory.consolidation import (
     ConsolidationConfig,
 )
 
-
 MEMORY_TYPES = [
-    "episodic", "semantic", "procedural",
-    "relational", "temporal", "aggregate",
+    "episodic",
+    "semantic",
+    "procedural",
+    "relational",
+    "temporal",
+    "aggregate",
 ]
 
 

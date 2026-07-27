@@ -13,7 +13,9 @@ def send_task(
     instruction: str = typer.Argument(..., help="Task instruction"),
     receiver: str = typer.Option(..., "--to", "-r", help="Receiver agent ID"),
     sender: str = typer.Option("", "--from", "-s", help="Sender agent ID"),
-    priority: str = typer.Option("medium", "--priority", "-p", help="Priority: low, medium, high, critical"),
+    priority: str = typer.Option(
+        "medium", "--priority", "-p", help="Priority: low, medium, high, critical"
+    ),
 ):
     bus = MessageBus()
     try:
@@ -60,7 +62,6 @@ def list_tasks(
     for task in tasks:
         assignee = task.receiver_id or task.assignee or "unassigned"
         pri = task.priority.value.upper()
-        ts = task.created_at[:19].replace("T", " ")
         typer.echo(
             f"[{task.status.value:>18}] {task.id} {pri:>8} -> {assignee:<20} {task.instruction[:60]}"
         )
@@ -209,4 +210,6 @@ def stale_tasks():
         return
 
     for task in stale:
-        typer.echo(f"  STALE: {task.id} claimed at {task.claimed_at[:19].replace('T', ' ')}")
+        typer.echo(
+            f"  STALE: {task.id} claimed at {task.claimed_at[:19].replace('T', ' ')}"
+        )

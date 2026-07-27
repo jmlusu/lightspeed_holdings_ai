@@ -68,7 +68,8 @@ def test_record_temporal(engine):
 
 def test_recall_context(engine):
     engine.record_task_outcome(
-        task_id="t-001", agent_id="cto",
+        task_id="t-001",
+        agent_id="cto",
         content="Deployed authentication API to staging",
     )
     engine.record_knowledge(
@@ -95,7 +96,8 @@ def test_recall_increments_access(engine):
 
 def test_search_across_types(engine):
     engine.record_task_outcome(
-        task_id="t-001", agent_id="cto",
+        task_id="t-001",
+        agent_id="cto",
         content="Deployed API",
     )
     engine.record_knowledge(
@@ -109,7 +111,8 @@ def test_search_across_types(engine):
 
 def test_get_stats(engine):
     engine.record_task_outcome(
-        task_id="t-001", agent_id="cto",
+        task_id="t-001",
+        agent_id="cto",
         content="task done",
     )
     engine.record_knowledge(
@@ -125,7 +128,9 @@ def test_get_stats(engine):
 
 def test_clear_type(engine):
     engine.record_task_outcome(
-        task_id="t-001", agent_id="cto", content="task",
+        task_id="t-001",
+        agent_id="cto",
+        content="task",
     )
     engine.record_knowledge(content="knowledge")
 
@@ -136,7 +141,9 @@ def test_clear_type(engine):
 
 def test_clear_all(engine):
     engine.record_task_outcome(
-        task_id="t-001", agent_id="cto", content="task",
+        task_id="t-001",
+        agent_id="cto",
+        content="task",
     )
     engine.record_knowledge(content="knowledge")
 
@@ -148,7 +155,8 @@ def test_clear_all(engine):
 def test_consolidate(engine):
     for i in range(3):
         engine.record_task_outcome(
-            task_id=f"t-{i}", agent_id="cto",
+            task_id=f"t-{i}",
+            agent_id="cto",
             content=f"task {i}",
         )
 

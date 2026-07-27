@@ -1,6 +1,3 @@
-import re
-from collections import Counter
-
 from lightspeed_agents.memory.models import MemoryEntry
 
 

@@ -1,7 +1,6 @@
 import uuid
 import enum
-from datetime import datetime, timezone
-from typing import Any
+from datetime import datetime, UTC
 
 from pydantic import BaseModel, Field
 
@@ -29,24 +28,18 @@ class ApprovalRequest(BaseModel):
     expires_at: str = ""
 
     def __init__(self, **data):
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         if not data.get("created_at"):
             data["created_at"] = now
         super().__init__(**data)
 
     @property
     def approval_count(self) -> int:
-        return len([
-            a for a in self.approvals
-            if a.get("decision") == "approved"
-        ])
+        return len([a for a in self.approvals if a.get("decision") == "approved"])
 
     @property
     def rejection_count(self) -> int:
-        return len([
-            a for a in self.approvals
-            if a.get("decision") == "rejected"
-        ])
+        return len([a for a in self.approvals if a.get("decision") == "rejected"])
 
     @property
     def is_fully_approved(self) -> bool:
@@ -62,12 +55,14 @@ class ApprovalRequest(BaseModel):
         decision: str,
         note: str = "",
     ):
-        self.approvals.append({
-            "approver_id": approver_id,
-            "decision": decision,
-            "note": note,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
+        self.approvals.append(
+            {
+                "approver_id": approver_id,
+                "decision": decision,
+                "note": note,
+                "timestamp": datetime.now(UTC).isoformat(),
+            }
+        )
 
         if self.is_rejected:
             self.status = ApprovalStatus.REJECTED

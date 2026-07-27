@@ -72,12 +72,18 @@ def test_enforce_cap(store, config):
 def test_aggregate_generation(store, config):
     entries = [
         MemoryEntry(
-            content="task done", memory_type="episodic",
-            agent_id="cto", department="engineering", tags=["deploy"],
+            content="task done",
+            memory_type="episodic",
+            agent_id="cto",
+            department="engineering",
+            tags=["deploy"],
         ),
         MemoryEntry(
-            content="knowledge gained", memory_type="semantic",
-            agent_id="cfo", department="finance", tags=["finance"],
+            content="knowledge gained",
+            memory_type="semantic",
+            agent_id="cfo",
+            department="finance",
+            tags=["finance"],
         ),
     ]
     store.save("episodic.json", [entries[0]])
@@ -96,9 +102,12 @@ def test_tick_trigger(store, config):
     config.tick_interval = 2
     scheduler = ConsolidationScheduler(store, config)
 
-    store.save("episodic.json", [
-        MemoryEntry(content="a", memory_type="episodic"),
-    ])
+    store.save(
+        "episodic.json",
+        [
+            MemoryEntry(content="a", memory_type="episodic"),
+        ],
+    )
 
     scheduler.on_tick()
     entries = store.load("episodic.json")

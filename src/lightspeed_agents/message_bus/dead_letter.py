@@ -1,6 +1,6 @@
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, UTC, timedelta
 
-from lightspeed_agents.message_bus.message_bus import MessageBus, INBOX_FILE
+from lightspeed_agents.message_bus.message_bus import MessageBus
 from lightspeed_agents.message_bus.task import Task
 from lightspeed_agents.message_bus.task_status import TaskStatus
 
@@ -13,7 +13,7 @@ class DeadLetterQueue:
 
     def detect_stale_tasks(self) -> list[Task]:
         stale = []
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         for task in self.bus.get_tasks_by_status(TaskStatus.IN_PROGRESS):
             if not task.claimed_at:

@@ -21,8 +21,13 @@ class TestActionTier:
         assert ActionTier.T4_BOARD.value == "T4"
 
     def test_risk_levels_are_ascending(self):
-        tiers = [ActionTier.T0_AUTO, ActionTier.T1_SOFT, ActionTier.T2_GATE,
-                 ActionTier.T3_DUAL, ActionTier.T4_BOARD]
+        tiers = [
+            ActionTier.T0_AUTO,
+            ActionTier.T1_SOFT,
+            ActionTier.T2_GATE,
+            ActionTier.T3_DUAL,
+            ActionTier.T4_BOARD,
+        ]
         risks = [TIER_RISK_LEVELS[t] for t in tiers]
         assert risks == sorted(risks)
 

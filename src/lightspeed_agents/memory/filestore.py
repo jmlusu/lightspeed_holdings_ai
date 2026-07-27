@@ -24,9 +24,7 @@ class FileStore:
         path = self.dir / filename
         data = [e.model_dump() for e in entries]
 
-        fd, tmp_path = tempfile.mkstemp(
-            dir=str(self.dir), suffix=".tmp"
-        )
+        fd, tmp_path = tempfile.mkstemp(dir=str(self.dir), suffix=".tmp")
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)

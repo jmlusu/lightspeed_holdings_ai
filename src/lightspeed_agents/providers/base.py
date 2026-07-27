@@ -11,5 +11,4 @@ class LLMProvider(ABC):
         model: str = "",
         temperature: float = 0.7,
         max_tokens: int = 2048,
-    ) -> str:
-        ...
+    ) -> str: ...

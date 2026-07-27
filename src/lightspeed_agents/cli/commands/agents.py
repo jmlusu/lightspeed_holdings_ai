@@ -2,7 +2,6 @@ import typer
 
 from lightspeed_agents.agents.loader import load_agents
 
-
 app = typer.Typer()
 
 
@@ -23,8 +22,9 @@ def list_agents(
 
     for agent in agents:
         reports = agent.reports_to or "-"
-        tools = ", ".join(agent.tools) if agent.tools else "-"
-        typer.echo(f"  {agent.id:<20} {agent.name:<30} {agent.department:<15} -> {reports}")
+        typer.echo(
+            f"  {agent.id:<20} {agent.name:<30} {agent.department:<15} -> {reports}"
+        )
 
 
 @app.command("show")
@@ -46,5 +46,7 @@ def show_agent(
     typer.echo(f"  Department:  {agent.department}")
     typer.echo(f"  Reports to:  {agent.reports_to or '-'}")
     typer.echo(f"  Tools:       {', '.join(agent.tools) if agent.tools else '-'}")
-    typer.echo(f"  Permissions: {', '.join(agent.permissions) if agent.permissions else '-'}")
+    typer.echo(
+        f"  Permissions: {', '.join(agent.permissions) if agent.permissions else '-'}"
+    )
     typer.echo(f"  Model:       {agent.model}")

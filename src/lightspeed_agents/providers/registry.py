@@ -1,6 +1,5 @@
 from lightspeed_agents.providers.base import LLMProvider
 
-
 _PROVIDERS: dict[str, type[LLMProvider]] = {}
 
 
@@ -21,7 +20,9 @@ def get_provider(name: str) -> LLMProvider:
 def _lazy_load(name: str):
     if name == "ollama":
         from lightspeed_agents.providers.ollama import OllamaProvider
+
         register_provider("ollama", OllamaProvider)
     elif name == "openai":
         from lightspeed_agents.providers.openai import OpenAIProvider
+
         register_provider("openai", OpenAIProvider)

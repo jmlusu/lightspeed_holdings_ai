@@ -39,7 +39,9 @@ def test_get_task_not_found(bus):
 
 def test_get_pending_tasks_priority_order(bus):
     bus.send_task(instruction="low", receiver_id="cto", priority=TaskPriority.LOW)
-    bus.send_task(instruction="critical", receiver_id="cto", priority=TaskPriority.CRITICAL)
+    bus.send_task(
+        instruction="critical", receiver_id="cto", priority=TaskPriority.CRITICAL
+    )
     bus.send_task(instruction="medium", receiver_id="cto", priority=TaskPriority.MEDIUM)
     bus.send_task(instruction="high", receiver_id="cto", priority=TaskPriority.HIGH)
 

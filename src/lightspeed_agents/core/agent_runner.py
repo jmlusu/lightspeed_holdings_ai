@@ -19,9 +19,7 @@ class AgentRunner:
         agent = registry.find(agent_id)
 
         if not agent:
-            raise ValueError(
-                f"Agent '{agent_id}' not found"
-            )
+            raise ValueError(f"Agent '{agent_id}' not found")
 
         resolved = self.resolver.resolve(
             agent_id,
@@ -39,9 +37,7 @@ class AgentRunner:
 
         prompt = task
         if context_entries:
-            context_lines = [
-                f"- {e.content[:200]}" for e in context_entries
-            ]
+            context_lines = [f"- {e.content[:200]}" for e in context_entries]
             context_text = "\n".join(context_lines)
             prompt = (
                 f"Relevant organizational memory:\n{context_text}\n\n"

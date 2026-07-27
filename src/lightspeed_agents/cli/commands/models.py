@@ -2,7 +2,6 @@ import typer
 
 from lightspeed_agents.models.resolver import ModelResolver, _AVAILABLE_PROVIDERS
 
-
 app = typer.Typer(help="View model tiers and agent overrides.")
 
 

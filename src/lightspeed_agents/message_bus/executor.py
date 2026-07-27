@@ -3,12 +3,10 @@ from typing import Callable, Optional
 
 from lightspeed_agents.message_bus.message_bus import MessageBus
 from lightspeed_agents.message_bus.task import Task
-from lightspeed_agents.message_bus.task_status import TaskStatus
 from lightspeed_agents.message_bus.audit import AuditStore
 from lightspeed_agents.message_bus.dead_letter import DeadLetterQueue
 from lightspeed_agents.memory.engine import MemoryEngine
 from lightspeed_agents.permissions.checker import PermissionChecker
-from lightspeed_agents.permissions.tiers import ActionTier
 
 
 class Executor:
@@ -38,6 +36,7 @@ class Executor:
     def _ensure_hitl_gate(self):
         if self.hitl_gate is None:
             from lightspeed_agents.permissions.hitl_gate import HITLGate
+
             self.hitl_gate = HITLGate(self.bus, self.memory)
         return self.hitl_gate
 
@@ -77,7 +76,9 @@ class Executor:
                 agent = self.agent_lookup_fn(task.receiver_id)
 
             if agent and tool_name:
-                approved, tier, error = self.permission_checker.validate_action(agent, tool_name)
+                approved, tier, error = self.permission_checker.validate_action(
+                    agent, tool_name
+                )
                 if not approved:
                     self.bus.fail_task(task.id, error=error)
                     self.audit.record(
@@ -95,7 +96,9 @@ class Executor:
                     )
                     return self.bus.get_task(task.id)
 
-                needs_approval, tier = self.permission_checker.requires_approval(agent, tool_name)
+                needs_approval, tier = self.permission_checker.requires_approval(
+                    agent, tool_name
+                )
                 if needs_approval:
                     gate = self._ensure_hitl_gate()
                     approval_request = gate.park_task(

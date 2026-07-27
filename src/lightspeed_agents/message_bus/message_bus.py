@@ -1,10 +1,13 @@
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from typing import Optional
 
 from lightspeed_agents.message_bus.task import Task
-from lightspeed_agents.message_bus.task_status import TaskStatus, TaskPriority, PRIORITY_ORDER
+from lightspeed_agents.message_bus.task_status import (
+    TaskStatus,
+    TaskPriority,
+    PRIORITY_ORDER,
+)
 from lightspeed_agents.message_bus.file_store import FileStore
-
 
 INBOX_FILE = "inbox.json"
 
@@ -59,16 +62,14 @@ class MessageBus:
         return None
 
     def get_pending_tasks(self) -> list[Task]:
-        tasks = [
-            t for t in self.get_all_tasks()
-            if t.status == TaskStatus.PENDING
-        ]
+        tasks = [t for t in self.get_all_tasks() if t.status == TaskStatus.PENDING]
         tasks.sort(key=lambda t: PRIORITY_ORDER.get(t.priority, 99))
         return tasks
 
     def get_tasks_by_receiver(self, receiver_id: str) -> list[Task]:
         return [
-            t for t in self.get_all_tasks()
+            t
+            for t in self.get_all_tasks()
             if t.receiver_id == receiver_id or t.assignee == receiver_id
         ]
 
@@ -76,16 +77,13 @@ class MessageBus:
         return [t for t in self.get_all_tasks() if t.status == status]
 
     def get_subtasks(self, parent_task_id: str) -> list[Task]:
-        return [
-            t for t in self.get_all_tasks()
-            if t.parent_task_id == parent_task_id
-        ]
+        return [t for t in self.get_all_tasks() if t.parent_task_id == parent_task_id]
 
     def claim_task(self, task_id: str) -> Task:
         task = self._update_status(
             task_id,
             TaskStatus.IN_PROGRESS,
-            extra={"claimed_at": datetime.now(timezone.utc).isoformat()},
+            extra={"claimed_at": datetime.now(UTC).isoformat()},
         )
         self._broadcast(task, "task_claimed")
         return task
@@ -96,7 +94,7 @@ class MessageBus:
             TaskStatus.COMPLETED,
             extra={
                 "result": result,
-                "completed_at": datetime.now(timezone.utc).isoformat(),
+                "completed_at": datetime.now(UTC).isoformat(),
             },
         )
         self._broadcast(task, "task_completed")
@@ -108,7 +106,7 @@ class MessageBus:
             TaskStatus.FAILED,
             extra={
                 "error": error,
-                "completed_at": datetime.now(timezone.utc).isoformat(),
+                "completed_at": datetime.now(UTC).isoformat(),
             },
         )
         self._broadcast(task, "task_failed")
@@ -130,9 +128,7 @@ class MessageBus:
         return task
 
     def park_for_approval(self, task_id: str) -> Task:
-        task = self._update_status(
-            task_id, TaskStatus.WAITING_APPROVAL
-        )
+        task = self._update_status(task_id, TaskStatus.WAITING_APPROVAL)
         self._broadcast(task, "task_parked")
         return task
 
@@ -160,7 +156,7 @@ class MessageBus:
     ) -> Task:
         updates = {
             "status": status.value,
-            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(UTC).isoformat(),
         }
         if extra:
             updates.update(extra)

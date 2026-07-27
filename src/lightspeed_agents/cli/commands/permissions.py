@@ -1,6 +1,5 @@
 import json
 import typer
-from typing import Optional
 
 from lightspeed_agents.permissions.checker import PermissionChecker
 from lightspeed_agents.permissions.hitl_gate import HITLGate
@@ -12,7 +11,6 @@ from lightspeed_agents.permissions.tiers import (
     TIER_DESCRIPTIONS,
 )
 from lightspeed_agents.permissions.tool_registry import ToolRegistry
-from lightspeed_agents.permissions.approval import ApprovalStatus
 from lightspeed_agents.agents.loader import load_agents
 
 app = typer.Typer(help="Permissions and approval management")
@@ -37,7 +35,9 @@ def check_permission(
     if approved:
         typer.echo(f"[OK] Agent '{agent_id}' can use '{tool}' (tier: {tier.value})")
     else:
-        typer.echo(f"[BLOCKED] Agent '{agent_id}' cannot use '{tool}': {error}", err=True)
+        typer.echo(
+            f"[BLOCKED] Agent '{agent_id}' cannot use '{tool}': {error}", err=True
+        )
         raise typer.Exit(1)
 
 
@@ -163,6 +163,7 @@ def audit_history(
     limit: int = typer.Option(20, "--limit", "-l", help="Number of records"),
 ):
     from lightspeed_agents.message_bus.audit import AuditStore
+
     audit = AuditStore()
     records = audit.get_recent(limit)
 

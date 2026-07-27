@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 from lightspeed_agents.message_bus.file_store import FileStore
 
@@ -19,7 +19,7 @@ class AuditStore:
         details: dict = None,
     ):
         entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "task_id": task_id,
             "event": event,
             "agent_id": agent_id,

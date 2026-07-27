@@ -4,7 +4,6 @@ from typing import Optional
 
 from lightspeed_agents.workflow.models import Workflow, WorkflowStep
 
-
 DEFAULT_WORKFLOWS_PATH = os.path.join(
     os.path.dirname(__file__), "..", "..", "..", "company", "workflows.yaml"
 )
@@ -32,13 +31,15 @@ def load_workflows(path: str = None) -> list[Workflow]:
             else:
                 steps.append(WorkflowStep(**step_raw))
 
-        workflows.append(Workflow(
-            id=wf_raw["id"],
-            name=wf_raw.get("name", ""),
-            description=wf_raw.get("description", ""),
-            owner=wf_raw.get("owner", ""),
-            steps=steps,
-        ))
+        workflows.append(
+            Workflow(
+                id=wf_raw["id"],
+                name=wf_raw.get("name", ""),
+                description=wf_raw.get("description", ""),
+                owner=wf_raw.get("owner", ""),
+                steps=steps,
+            )
+        )
 
     return workflows
 

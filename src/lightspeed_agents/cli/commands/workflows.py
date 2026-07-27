@@ -34,7 +34,7 @@ def show_workflow(
     typer.echo(f"  ID: {wf.id}")
     typer.echo(f"  Description: {wf.description}")
     typer.echo(f"  Owner: {wf.owner}")
-    typer.echo(f"\n  Steps:")
+    typer.echo("\n  Steps:")
 
     for i, step in enumerate(wf.steps):
         deps = f" (depends: {', '.join(step.depends_on)})" if step.depends_on else ""
@@ -61,7 +61,9 @@ def start_workflow(
 
 @app.command("runs")
 def list_runs(
-    workflow_id: str = typer.Option(None, "--workflow", "-w", help="Filter by workflow ID"),
+    workflow_id: str = typer.Option(
+        None, "--workflow", "-w", help="Filter by workflow ID"
+    ),
     limit: int = typer.Option(20, "--limit", "-n", help="Max results"),
 ):
     engine = WorkflowEngine()
@@ -101,12 +103,14 @@ def run_status(
     typer.echo(f"\n  Run: {run.id}")
     typer.echo(f"  Workflow: {wf_name} ({run.workflow_id})")
     typer.echo(f"  Status: {run.status.value}")
-    typer.echo(f"  Started: {run.started_at[:19].replace('T', ' ') if run.started_at else 'N/A'}")
+    typer.echo(
+        f"  Started: {run.started_at[:19].replace('T', ' ') if run.started_at else 'N/A'}"
+    )
 
     if run.completed_at:
         typer.echo(f"  Completed: {run.completed_at[:19].replace('T', ' ')}")
 
-    typer.echo(f"\n  Step Results:")
+    typer.echo("\n  Step Results:")
 
     if wf:
         for step in wf.steps:
@@ -133,7 +137,7 @@ def approve_step(
 ):
     engine = WorkflowEngine()
     try:
-        run = engine.approve_step(run_id, step_id)
+        engine.approve_step(run_id, step_id)
         typer.echo(f"Step '{step_id}' approved in run {run_id}")
     except ValueError as e:
         typer.echo(f"Error: {e}")
@@ -151,7 +155,7 @@ def complete_step(
         run = engine.complete_step(run_id, step_id, result=result)
         typer.echo(f"Step '{step_id}' completed in run {run_id}")
         if run.status.value == "completed":
-            typer.echo(f"Workflow completed!")
+            typer.echo("Workflow completed!")
     except ValueError as e:
         typer.echo(f"Error: {e}")
         raise typer.Exit(1)
@@ -163,7 +167,7 @@ def cancel_workflow(
 ):
     engine = WorkflowEngine()
     try:
-        run = engine.cancel_workflow(run_id)
+        engine.cancel_workflow(run_id)
         typer.echo(f"Workflow run {run_id} cancelled.")
     except ValueError as e:
         typer.echo(f"Error: {e}")

@@ -1,7 +1,6 @@
 import enum
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import datetime, UTC
 
 from pydantic import BaseModel, Field
 
@@ -64,7 +63,7 @@ class WorkflowRun(BaseModel):
     completed_at: str = ""
 
     def __init__(self, **data):
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         if not data.get("created_at"):
             data["created_at"] = now
         if not data.get("updated_at"):
@@ -72,4 +71,4 @@ class WorkflowRun(BaseModel):
         super().__init__(**data)
 
     def touch(self):
-        self.updated_at = datetime.now(timezone.utc).isoformat()
+        self.updated_at = datetime.now(UTC).isoformat()

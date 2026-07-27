@@ -25,8 +25,19 @@ def workflows_file(tmp_path):
                 "description": "Test workflow",
                 "owner": "cto",
                 "steps": [
-                    {"id": "s1", "instruction": "Step 1", "assignee": "cto", "tier": "T0"},
-                    {"id": "s2", "instruction": "Step 2", "assignee": "cfo", "depends_on": ["s1"], "tier": "T1"},
+                    {
+                        "id": "s1",
+                        "instruction": "Step 1",
+                        "assignee": "cto",
+                        "tier": "T0",
+                    },
+                    {
+                        "id": "s2",
+                        "instruction": "Step 2",
+                        "assignee": "cfo",
+                        "depends_on": ["s1"],
+                        "tier": "T1",
+                    },
                 ],
             },
             {
@@ -35,7 +46,12 @@ def workflows_file(tmp_path):
                 "description": "Needs approval",
                 "owner": "cto",
                 "steps": [
-                    {"id": "s1", "instruction": "Step 1", "assignee": "cto", "tier": "T2"},
+                    {
+                        "id": "s1",
+                        "instruction": "Step 1",
+                        "assignee": "cto",
+                        "tier": "T2",
+                    },
                 ],
             },
         ]
@@ -173,16 +189,35 @@ def test_memory_records(engine, workflows_file):
 
 def test_dependencies_block(engine, tmp_path):
     data = {
-        "workflows": [{
-            "id": "dep-wf",
-            "name": "Dependent",
-            "owner": "cto",
-            "steps": [
-                {"id": "s1", "instruction": "First", "assignee": "cto", "tier": "T0"},
-                {"id": "s2", "instruction": "Second", "assignee": "cfo", "depends_on": ["s1"], "tier": "T0"},
-                {"id": "s3", "instruction": "Third", "assignee": "coo", "depends_on": ["s2"], "tier": "T0"},
-            ],
-        }]
+        "workflows": [
+            {
+                "id": "dep-wf",
+                "name": "Dependent",
+                "owner": "cto",
+                "steps": [
+                    {
+                        "id": "s1",
+                        "instruction": "First",
+                        "assignee": "cto",
+                        "tier": "T0",
+                    },
+                    {
+                        "id": "s2",
+                        "instruction": "Second",
+                        "assignee": "cfo",
+                        "depends_on": ["s1"],
+                        "tier": "T0",
+                    },
+                    {
+                        "id": "s3",
+                        "instruction": "Third",
+                        "assignee": "coo",
+                        "depends_on": ["s2"],
+                        "tier": "T0",
+                    },
+                ],
+            }
+        ]
     }
     path = tmp_path / "workflows.yaml"
     with open(path, "w") as f:

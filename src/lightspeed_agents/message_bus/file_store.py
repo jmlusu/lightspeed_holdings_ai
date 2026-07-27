@@ -36,9 +36,7 @@ class FileLock:
                             pass
                         continue
                 if time.time() - start > self.timeout:
-                    raise TimeoutError(
-                        f"Could not acquire lock on {self.lock_path}"
-                    )
+                    raise TimeoutError(f"Could not acquire lock on {self.lock_path}")
                 time.sleep(0.05)
 
     def release(self):

@@ -9,11 +9,13 @@ def _make_entries(contents):
 
 
 def test_keyword_search_basic():
-    entries = _make_entries([
-        "deploy the API to staging",
-        "fix the login bug",
-        "deploy the database migration",
-    ])
+    entries = _make_entries(
+        [
+            "deploy the API to staging",
+            "fix the login bug",
+            "deploy the database migration",
+        ]
+    )
     results = keyword_search(entries, "deploy")
     assert len(results) == 2
     assert all("deploy" in e.content.lower() for e in results)

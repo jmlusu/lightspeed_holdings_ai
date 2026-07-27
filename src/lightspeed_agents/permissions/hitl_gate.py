@@ -1,7 +1,6 @@
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, UTC, timedelta
 
 from lightspeed_agents.message_bus.message_bus import MessageBus
-from lightspeed_agents.message_bus.task_status import TaskStatus
 from lightspeed_agents.message_bus.file_store import FileStore
 from lightspeed_agents.permissions.approval import ApprovalRequest, ApprovalStatus
 from lightspeed_agents.permissions.tiers import (
@@ -10,7 +9,6 @@ from lightspeed_agents.permissions.tiers import (
     TIER_TIMEOUT_MINUTES,
 )
 from lightspeed_agents.memory.engine import MemoryEngine
-
 
 APPROVALS_FILE = "approvals.json"
 
@@ -45,9 +43,7 @@ class HITLGate:
             tier=tier,
             instruction=instruction,
             required_approvals=required,
-            expires_at=(
-                datetime.now(timezone.utc) + timedelta(minutes=timeout_min)
-            ).isoformat(),
+            expires_at=(datetime.now(UTC) + timedelta(minutes=timeout_min)).isoformat(),
         )
 
         self._save_request(request)
@@ -107,10 +103,7 @@ class HITLGate:
         return request
 
     def get_pending(self) -> list[ApprovalRequest]:
-        return [
-            r for r in self._load_requests()
-            if r.status == ApprovalStatus.PENDING
-        ]
+        return [r for r in self._load_requests() if r.status == ApprovalStatus.PENDING]
 
     def get_request(self, request_id: str) -> ApprovalRequest:
         return self._get_request(request_id)
@@ -119,14 +112,11 @@ class HITLGate:
         return self._load_requests()
 
     def get_by_task(self, task_id: str) -> list[ApprovalRequest]:
-        return [
-            r for r in self._load_requests()
-            if r.task_id == task_id
-        ]
+        return [r for r in self._load_requests() if r.task_id == task_id]
 
     def check_expired(self) -> list[ApprovalRequest]:
         expired = []
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         for request in self.get_pending():
             if request.expires_at:

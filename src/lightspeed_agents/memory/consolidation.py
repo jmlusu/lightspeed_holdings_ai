@@ -32,8 +32,12 @@ class ConsolidationScheduler:
 
     def consolidate(self):
         for memory_type in [
-            "episodic", "semantic", "procedural",
-            "relational", "temporal", "aggregate",
+            "episodic",
+            "semantic",
+            "procedural",
+            "relational",
+            "temporal",
+            "aggregate",
         ]:
             filename = f"{memory_type}.json"
             entries = self.filestore.load(filename)
@@ -50,10 +54,17 @@ class ConsolidationScheduler:
         self._generate_aggregates()
 
     def prune(self, memory_type: str = None):
-        types = [memory_type] if memory_type else [
-            "episodic", "semantic", "procedural",
-            "relational", "temporal",
-        ]
+        types = (
+            [memory_type]
+            if memory_type
+            else [
+                "episodic",
+                "semantic",
+                "procedural",
+                "relational",
+                "temporal",
+            ]
+        )
 
         for mt in types:
             filename = f"{mt}.json"
@@ -62,9 +73,7 @@ class ConsolidationScheduler:
             entries = self._enforce_cap(entries)
             self.filestore.save(filename, entries)
 
-    def _prune(
-        self, entries: list[MemoryEntry], memory_type: str
-    ) -> list[MemoryEntry]:
+    def _prune(self, entries: list[MemoryEntry], memory_type: str) -> list[MemoryEntry]:
         result = []
         for entry in entries:
             if memory_type == "episodic":
@@ -96,7 +105,7 @@ class ConsolidationScheduler:
             key=lambda e: (e.access_count, e.created_at),
             reverse=True,
         )
-        return entries[:self.config.capacity_cap]
+        return entries[: self.config.capacity_cap]
 
     def _generate_aggregates(self):
         all_entries = {}
@@ -120,39 +129,45 @@ class ConsolidationScheduler:
 
         if tag_counts:
             top_tags = tag_counts.most_common(20)
-            aggregates.append(MemoryEntry(
-                content=f"Top tags: {', '.join(f'{t}({c})' for t, c in top_tags)}",
-                memory_type="aggregate",
-                tags=["stats", "tags"],
-                metadata={"top_tags": dict(top_tags)},
-            ))
+            aggregates.append(
+                MemoryEntry(
+                    content=f"Top tags: {', '.join(f'{t}({c})' for t, c in top_tags)}",
+                    memory_type="aggregate",
+                    tags=["stats", "tags"],
+                    metadata={"top_tags": dict(top_tags)},
+                )
+            )
 
         if agent_counts:
             top_agents = agent_counts.most_common(20)
-            aggregates.append(MemoryEntry(
-                content=f"Most active agents: {', '.join(f'{a}({c})' for a, c in top_agents)}",
-                memory_type="aggregate",
-                tags=["stats", "agents"],
-                metadata={"top_agents": dict(top_agents)},
-            ))
+            aggregates.append(
+                MemoryEntry(
+                    content=f"Most active agents: {', '.join(f'{a}({c})' for a, c in top_agents)}",
+                    memory_type="aggregate",
+                    tags=["stats", "agents"],
+                    metadata={"top_agents": dict(top_agents)},
+                )
+            )
 
         if dept_counts:
             top_depts = dept_counts.most_common(20)
-            aggregates.append(MemoryEntry(
-                content=f"Most active departments: {', '.join(f'{d}({c})' for d, c in top_depts)}",
-                memory_type="aggregate",
-                tags=["stats", "departments"],
-                metadata={"top_departments": dict(top_depts)},
-            ))
+            aggregates.append(
+                MemoryEntry(
+                    content=f"Most active departments: {', '.join(f'{d}({c})' for d, c in top_depts)}",
+                    memory_type="aggregate",
+                    tags=["stats", "departments"],
+                    metadata={"top_departments": dict(top_depts)},
+                )
+            )
 
-        total_counts = {
-            mt: len(entries) for mt, entries in all_entries.items()
-        }
-        aggregates.append(MemoryEntry(
-            content=f"Entry counts: {total_counts}",
-            memory_type="aggregate",
-            tags=["stats", "counts"],
-            metadata={"counts": total_counts},
-        ))
+        total_counts = {mt: len(entries) for mt, entries in all_entries.items()}
+        aggregates.append(
+            MemoryEntry(
+                content=f"Entry counts: {total_counts}",
+                memory_type="aggregate",
+                tags=["stats", "counts"],
+                metadata={"counts": total_counts},
+            )
+        )
 
         self.filestore.save("aggregate.json", aggregates)

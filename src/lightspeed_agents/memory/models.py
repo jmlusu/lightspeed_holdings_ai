@@ -1,6 +1,6 @@
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import datetime, UTC
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -19,7 +19,7 @@ class MemoryEntry(BaseModel):
     updated_at: str = ""
 
     def __init__(self, **data):
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         if not data.get("created_at"):
             data["created_at"] = now
         if not data.get("updated_at"):
@@ -28,9 +28,9 @@ class MemoryEntry(BaseModel):
 
     def touch(self):
         self.access_count += 1
-        self.updated_at = datetime.now(timezone.utc).isoformat()
+        self.updated_at = datetime.now(UTC).isoformat()
 
     def is_older_than_days(self, days: int) -> bool:
         created = datetime.fromisoformat(self.created_at)
-        age = datetime.now(timezone.utc) - created
+        age = datetime.now(UTC) - created
         return age.days > days

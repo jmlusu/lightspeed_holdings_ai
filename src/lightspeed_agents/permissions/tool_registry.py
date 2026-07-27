@@ -1,6 +1,5 @@
 from lightspeed_agents.permissions.tiers import ActionTier
 
-
 DEFAULT_TOOL_TIERS = {
     "read": ActionTier.T0_AUTO,
     "list": ActionTier.T0_AUTO,

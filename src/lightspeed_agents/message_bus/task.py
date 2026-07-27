@@ -1,12 +1,11 @@
 import re
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import datetime, UTC
+from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
 from lightspeed_agents.message_bus.task_status import TaskStatus, TaskPriority
-
 
 KEBAB_CASE_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
@@ -32,7 +31,7 @@ class Task(BaseModel):
     metadata: dict[str, Any] = {}
 
     def __init__(self, **data):
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         if not data.get("created_at"):
             data["created_at"] = now
         if not data.get("updated_at"):
@@ -43,9 +42,7 @@ class Task(BaseModel):
     @classmethod
     def validate_receiver_kebab(cls, v):
         if v and not KEBAB_CASE_RE.match(v):
-            raise ValueError(
-                f"receiver_id must be kebab-case, got '{v}'"
-            )
+            raise ValueError(f"receiver_id must be kebab-case, got '{v}'")
         return v
 
     @property
@@ -58,4 +55,4 @@ class Task(BaseModel):
         }
 
     def touch(self):
-        self.updated_at = datetime.now(timezone.utc).isoformat()
+        self.updated_at = datetime.now(UTC).isoformat()

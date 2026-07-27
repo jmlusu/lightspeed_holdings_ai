@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import yaml
@@ -72,7 +71,7 @@ class PromptBuilder:
         if not dept_kpis:
             return ""
 
-        lines = [f"## Department KPIs"]
+        lines = ["## Department KPIs"]
 
         for kpi in dept_kpis.get("kpis", []):
             lines.append(
@@ -111,10 +110,7 @@ class PromptBuilder:
                 "You are at the top of the organization chart."
             )
 
-        return (
-            "## Organizational Position\n\n"
-            f"- **Reports to:** {agent.reports_to}"
-        )
+        return "## Organizational Position\n\n" f"- **Reports to:** {agent.reports_to}"
 
     def _guidelines(self) -> str:
         return (

@@ -15,8 +15,19 @@ def sample_yaml(tmp_path):
                 "description": "A test",
                 "owner": "cto",
                 "steps": [
-                    {"id": "step-1", "instruction": "Do first", "assignee": "cto", "tier": "T0"},
-                    {"id": "step-2", "instruction": "Do second", "assignee": "cfo", "depends_on": ["step-1"], "tier": "T2"},
+                    {
+                        "id": "step-1",
+                        "instruction": "Do first",
+                        "assignee": "cto",
+                        "tier": "T0",
+                    },
+                    {
+                        "id": "step-2",
+                        "instruction": "Do second",
+                        "assignee": "cfo",
+                        "depends_on": ["step-1"],
+                        "tier": "T2",
+                    },
                 ],
             }
         ]
@@ -70,6 +81,7 @@ def test_load_workflows_string_steps(tmp_path):
 
 def test_load_default_workflows():
     from lightspeed_agents.workflow.loader import DEFAULT_WORKFLOWS_PATH
+
     if os.path.exists(os.path.abspath(DEFAULT_WORKFLOWS_PATH)):
         workflows = load_workflows()
         assert len(workflows) == 4

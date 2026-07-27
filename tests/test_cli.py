@@ -3,7 +3,6 @@ from typer.testing import CliRunner
 
 from lightspeed_agents.cli.main import app
 
-
 runner = CliRunner()
 
 

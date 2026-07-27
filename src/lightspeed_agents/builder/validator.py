@@ -18,7 +18,10 @@ class CompanyValidator:
             if company[section] is None:
                 raise ValueError(f"Configuration section '{section}' is empty")
 
-            if isinstance(company[section], (dict, list)) and len(company[section]) == 0:
+            if (
+                isinstance(company[section], (dict, list))
+                and len(company[section]) == 0
+            ):
                 raise ValueError(f"Configuration section '{section}' contains no data")
 
         print("[OK] Configuration validated")

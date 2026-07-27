@@ -25,7 +25,9 @@ app.add_typer(prompts_app, name="prompts", help="Preview agent system prompts.")
 app.add_typer(memory_app, name="memory", help="View and manage agent memory.")
 app.add_typer(tasks_app, name="tasks", help="Manage inter-agent task messaging.")
 app.add_typer(workflows_app, name="workflows", help="Manage and execute workflows.")
-app.add_typer(permissions_app, name="permissions", help="Manage permissions and approvals.")
+app.add_typer(
+    permissions_app, name="permissions", help="Manage permissions and approvals."
+)
 
 
 @app.command()

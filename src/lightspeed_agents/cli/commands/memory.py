@@ -2,7 +2,6 @@ import typer
 
 from lightspeed_agents.memory.engine import MemoryEngine
 
-
 app = typer.Typer(help="View and manage agent memory.")
 
 
@@ -28,9 +27,7 @@ def show_memory(
     for entry in entries:
         ts = entry.created_at[:19].replace("T", " ")
         tags = ",".join(entry.tags) if entry.tags else ""
-        typer.echo(
-            f"[{ts}] {entry.id} ({tags}) {entry.content[:100]}"
-        )
+        typer.echo(f"[{ts}] {entry.id} ({tags}) {entry.content[:100]}")
 
 
 @app.command("search")
@@ -119,19 +116,30 @@ def record_entry(
 
     writers = {
         "episodic": lambda: engine.record_task_outcome(
-            task_id="manual", agent_id=agent_id, content=content, tags=tag_list,
+            task_id="manual",
+            agent_id=agent_id,
+            content=content,
+            tags=tag_list,
         ),
         "semantic": lambda: engine.record_knowledge(
-            content=content, agent_id=agent_id, tags=tag_list,
+            content=content,
+            agent_id=agent_id,
+            tags=tag_list,
         ),
         "procedural": lambda: engine.record_procedure(
-            content=content, agent_id=agent_id, tags=tag_list,
+            content=content,
+            agent_id=agent_id,
+            tags=tag_list,
         ),
         "relational": lambda: engine.record_relationship(
-            content=content, agent_id=agent_id, tags=tag_list,
+            content=content,
+            agent_id=agent_id,
+            tags=tag_list,
         ),
         "temporal": lambda: engine.record_temporal(
-            content=content, agent_id=agent_id, tags=tag_list,
+            content=content,
+            agent_id=agent_id,
+            tags=tag_list,
         ),
     }
 

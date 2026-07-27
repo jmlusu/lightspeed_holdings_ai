@@ -184,7 +184,9 @@ class TestExecutorPermissions:
             agent_lookup_fn=registry.find,
         )
 
-        task = make_task(tmp_bus, receiver_id="test-agent", metadata={"tool_name": "python"})
+        task = make_task(
+            tmp_bus, receiver_id="test-agent", metadata={"tool_name": "python"}
+        )
 
         result = executor.tick()
         assert result[0].status == TaskStatus.WAITING_APPROVAL

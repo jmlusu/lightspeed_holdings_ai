@@ -39,9 +39,7 @@ def test_entry_touch():
 
 def test_entry_is_older_than_days():
     entry = MemoryEntry(content="old")
-    entry.created_at = (
-        datetime.now(timezone.utc) - timedelta(days=100)
-    ).isoformat()
+    entry.created_at = (datetime.now(timezone.utc) - timedelta(days=100)).isoformat()
     assert entry.is_older_than_days(90) is True
     assert entry.is_older_than_days(101) is False
 
