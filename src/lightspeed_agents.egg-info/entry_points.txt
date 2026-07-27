@@ -1,0 +1,2 @@
+[console_scripts]
+lightspeed = lightspeed_agents.cli.main:app

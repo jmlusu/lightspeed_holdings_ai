@@ -1,0 +1,32 @@
+departments:
+  - name: engineering
+    executive: cto
+    agents:
+      - lead-engineer
+      - backend-engineer
+      - frontend-engineer
+
+  - name: finance
+    executive: cfo
+    agents:
+      - accountant
+
+  - name: operations
+    executive: coo
+    agents:
+      - operations-manager
+
+  - name: marketing
+    executive: cmo
+    agents:
+      - content-writer
+
+  - name: human-resources
+    executive: chro
+    agents:
+      - recruiter
+
+  - name: legal
+    executive: clo
+    agents:
+      - legal-counsel

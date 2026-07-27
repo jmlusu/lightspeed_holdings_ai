@@ -1,0 +1,61 @@
+import pytest
+from typer.testing import CliRunner
+
+from lightspeed_agents.cli.main import app
+
+
+runner = CliRunner()
+
+
+def test_help():
+    result = runner.invoke(app, ["--help"])
+    assert result.exit_code == 0
+    assert "LightSpeed Agents" in result.output
+
+
+def test_version():
+    result = runner.invoke(app, ["version"])
+    assert result.exit_code == 0
+    assert "0.1.0" in result.output
+
+
+def test_agents_list():
+    result = runner.invoke(app, ["agents", "list"])
+    assert result.exit_code == 0
+    assert "cto" in result.output
+    assert "cfo" in result.output
+    assert "Human CEO" in result.output
+
+
+def test_agents_list_dept_filter():
+    result = runner.invoke(app, ["agents", "list", "--dept", "engineering"])
+    assert result.exit_code == 0
+    assert "cto" in result.output
+    assert "cfo" not in result.output
+
+
+def test_agents_show():
+    result = runner.invoke(app, ["agents", "show", "cto"])
+    assert result.exit_code == 0
+    assert "Chief Technology Officer" in result.output
+    assert "engineering" in result.output
+
+
+def test_agents_show_not_found():
+    result = runner.invoke(app, ["agents", "show", "nonexistent"])
+    assert result.exit_code == 1
+
+
+def test_models_list():
+    result = runner.invoke(app, ["models", "list"])
+    assert result.exit_code == 0
+    assert "FAST" in result.output
+    assert "STANDARD" in result.output
+    assert "PREMIUM" in result.output
+
+
+def test_models_overrides():
+    result = runner.invoke(app, ["models", "overrides"])
+    assert result.exit_code == 0
+    assert "cto" in result.output
+    assert "premium" in result.output

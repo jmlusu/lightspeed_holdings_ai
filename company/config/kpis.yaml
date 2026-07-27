@@ -1,0 +1,77 @@
+departments:
+
+  engineering:
+    name: Engineering
+    kpis:
+      - id: eng-deploy-frequency
+        name: Deployment Frequency
+        target: 10
+        unit: "per week"
+        frequency: weekly
+
+      - id: eng-cycle-time
+        name: Cycle Time
+        target: 2
+        unit: "days"
+        frequency: weekly
+
+
+  operations:
+    name: Operations
+    kpis:
+      - id: ops-task-completion
+        name: Task Completion Rate
+        target: 95
+        unit: "%"
+        frequency: weekly
+
+
+  finance:
+    name: Finance
+    kpis:
+      - id: finance-budget-control
+        name: Budget Accuracy
+        target: 95
+        unit: "%"
+        frequency: monthly
+
+
+  marketing:
+    name: Marketing
+    kpis:
+      - id: marketing-campaign-performance
+        name: Campaign Performance
+        target: 80
+        unit: "%"
+        frequency: monthly
+
+
+  sales:
+    name: Sales
+    kpis:
+      - id: sales-pipeline-growth
+        name: Pipeline Growth
+        target: 20
+        unit: "%"
+        frequency: monthly
+
+
+  human-resources:
+    name: Human Resources
+    kpis:
+      - id: hr-agent-utilization
+        name: Agent Utilization
+        target: 85
+        unit: "%"
+        frequency: weekly
+
+
+  executive:
+    name: Executive Office
+    kpis:
+      - id: executive-decision-speed
+        name: Decision Cycle Time
+        target: 24
+        unit: "hours"
+        frequency: weekly
+

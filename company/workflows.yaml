@@ -1,0 +1,43 @@
+workflows:
+
+  - id: daily-executive-briefing
+    name: Daily Executive Briefing
+    description: Generate CEO briefing
+    owner: chief-of-staff
+    steps:
+      - collect_metrics
+      - analyze_status
+      - generate_report
+
+  - id: software-development
+    name: Software Development Workflow
+    description: Engineering delivery workflow
+    owner: cto
+    steps:
+      - create_task
+      - assign_agent
+      - execute
+      - review
+      - deploy
+
+  - id: incident-response
+    name: Incident Response Workflow
+    description: Handle system incidents
+    owner: cto
+    steps:
+      - detect
+      - escalate
+      - investigate
+      - resolve
+      - postmortem
+
+  - id: hiring
+    name: AI Agent Hiring Workflow
+    description: Add new agents
+    owner: chief-of-staff
+    steps:
+      - review_need
+      - register_agent
+      - generate_files
+      - validate
+

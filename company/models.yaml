@@ -1,0 +1,36 @@
+tiers:
+
+  fast:
+    description: "Simple tasks, drafts"
+    providers:
+      - provider: ollama
+        model: llama3
+      - provider: openai
+        model: gpt-4o-mini
+
+  standard:
+    description: "General work"
+    providers:
+      - provider: openai
+        model: gpt-4o-mini
+      - provider: ollama
+        model: llama3
+
+  premium:
+    description: "Complex reasoning"
+    providers:
+      - provider: openai
+        model: gpt-4o
+      - provider: ollama
+        model: llama3
+
+
+agent_overrides:
+
+  cto: premium
+  cfo: premium
+  coo: standard
+  lead-engineer: premium
+  backend-engineer: standard
+  frontend-engineer: standard
+  content-writer: fast

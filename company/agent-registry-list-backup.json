@@ -1,0 +1,142 @@
+[
+  {
+    "id": "human-ceo",
+    "name": "Human CEO",
+    "role": "Chief Executive Officer",
+    "type": "Executive",
+    "department": "executive",
+    "reportsTo": null,
+    "tools": ["dashboard"],
+    "permissions": ["approve","decide"]
+  },
+  {
+    "id": "chief-of-staff",
+    "name": "Chief of Staff",
+    "role": "Executive Coordinator",
+    "type": "Executive",
+    "department": "executive",
+    "reportsTo": "human-ceo",
+    "tools": ["planning","reporting"],
+    "permissions": ["read","coordinate"]
+  },
+  {
+    "id": "cto",
+    "name": "Chief Technology Officer",
+    "role": "Technology Executive",
+    "type": "Executive",
+    "department": "engineering",
+    "reportsTo": "human-ceo",
+    "tools": ["python","git","docker"],
+    "permissions": ["read","edit"]
+  },
+  {
+    "id": "cfo",
+    "name": "Chief Financial Officer",
+    "role": "Finance Executive",
+    "type": "Executive",
+    "department": "finance",
+    "reportsTo": "human-ceo",
+    "tools": ["finance"],
+    "permissions": ["read"]
+  },
+  {
+    "id": "coo",
+    "name": "Chief Operating Officer",
+    "role": "Operations Executive",
+    "type": "Executive",
+    "department": "operations",
+    "reportsTo": "human-ceo",
+    "tools": ["operations"],
+    "permissions": ["read"]
+  },
+  {
+    "id": "cmo",
+    "name": "Chief Marketing Officer",
+    "role": "Marketing Executive",
+    "type": "Executive",
+    "department": "marketing",
+    "reportsTo": "human-ceo",
+    "tools": ["marketing"],
+    "permissions": ["read"]
+  },
+  {
+    "id": "lead-engineer",
+    "name": "Lead Engineer",
+    "role": "Engineering Lead",
+    "type": "Specialist",
+    "department": "engineering",
+    "reportsTo": "cto",
+    "tools": ["python","git"],
+    "permissions": ["read","edit"]
+  },
+  {
+    "id": "backend-engineer",
+    "name": "Backend Engineer",
+    "role": "Backend Developer",
+    "type": "Specialist",
+    "department": "engineering",
+    "reportsTo": "lead-engineer",
+    "tools": ["python"],
+    "permissions": ["edit"]
+  },
+  {
+    "id": "frontend-engineer",
+    "name": "Frontend Engineer",
+    "role": "Frontend Developer",
+    "type": "Specialist",
+    "department": "engineering",
+    "reportsTo": "lead-engineer",
+    "tools": ["javascript"],
+    "permissions": ["edit"]
+  },
+  {
+    "id": "ai-engineer",
+    "name": "AI Engineer",
+    "role": "Machine Learning Engineer",
+    "type": "Specialist",
+    "department": "ai",
+    "reportsTo": "cto",
+    "tools": ["python","llm"],
+    "permissions": ["edit"]
+  },
+  {
+    "id": "data-engineer",
+    "name": "Data Engineer",
+    "role": "Data Platform Engineer",
+    "type": "Specialist",
+    "department": "data",
+    "reportsTo": "cto",
+    "tools": ["sql","python"],
+    "permissions": ["edit"]
+  },
+  {
+    "id": "financial-analyst",
+    "name": "Financial Analyst",
+    "role": "Financial Analyst",
+    "type": "Specialist",
+    "department": "finance",
+    "reportsTo": "cfo",
+    "tools": ["finance"],
+    "permissions": ["read"]
+  },
+  {
+    "id": "operations-manager",
+    "name": "Operations Manager",
+    "role": "Operations Manager",
+    "type": "Specialist",
+    "department": "operations",
+    "reportsTo": "coo",
+    "tools": ["planning"],
+    "permissions": ["read"]
+  },
+  {
+    "id": "content-writer",
+    "name": "Content Writer",
+    "role": "Content Creator",
+    "type": "Specialist",
+    "department": "marketing",
+    "reportsTo": "cmo",
+    "tools": ["writing"],
+    "permissions": ["read"]
+  }
+]

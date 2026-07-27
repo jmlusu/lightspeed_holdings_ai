@@ -1,0 +1,21 @@
+{
+  "agents": [
+    {
+      "id": "cto",
+      "name": "Chief Technology Officer",
+      "role": "Technology Executive",
+      "type": "Executive",
+      "department": "engineering",
+      "reportsTo": "human-ceo",
+      "tools": [
+        "python",
+        "git",
+        "docker"
+      ],
+      "permissions": [
+        "read",
+        "edit"
+      ]
+    }
+  ]
+}
