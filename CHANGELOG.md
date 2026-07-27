@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Day-by-day timeline for Weeks 7-8
   - Risk register with 8 identified risks and mitigations
   - Success metrics and KPIs for workflow orchestration
+  - Per-task dependency flags (BLOCKED BY, SHOULD WAIT, Cross-Epic Risk)
+  - Cross-epic dependency map with 8 inter-epic dependencies flagged
+  - 5 HIGH-risk dependency conflicts identified (parallel+retry, rollback+retry ordering, pause+sync, file locking)
 - Updated roadmap to reflect Sprint 3 in progress, Sprint 4 in planning
 
 ### In Progress (Sprint 3 — Memory & Knowledge)

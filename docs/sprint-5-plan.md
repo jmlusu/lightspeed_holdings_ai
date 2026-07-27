@@ -394,6 +394,315 @@ Expose every core subsystem (MessageBus, CostTracker, WorkflowEngine, MemoryEngi
 
 ---
 
+## Detailed Task Dependencies
+
+### Epic 1: FastAPI Foundation — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-001 | None | `pyproject.toml` (add fastapi, uvicorn), `config/settings.py` (existing patterns) | lead-engineer (architecture review) | LOW |
+| D5-002 | D5-001 (app factory) | `config/settings.py` (Pydantic Settings pattern) | None | LOW |
+| D5-003 | D5-001 (app factory), D5-005 (DI providers) | `message_bus/message_bus.py`, `memory/engine.py`, `workflow/engine.py`, `core/cost_tracker.py` | None | LOW |
+| D5-004 | D5-001 (app factory), D5-003 (health check) | Same as D5-003 | None | LOW |
+| D5-005 | D5-001 (app factory) | `message_bus/message_bus.py`, `core/cost_tracker.py`, `workflow/engine.py`, `memory/engine.py`, `agents/registry.py` | None | MEDIUM — must understand all subsystem interfaces |
+| D5-006 | D5-001 (app factory) | None (standard FastAPI patterns) | None | LOW |
+
+**Epic 1 Blockers:**
+- `fastapi` and `uvicorn` must be added to `pyproject.toml` dependencies before any work begins
+- `config/settings.py` must be understood to follow existing Pydantic Settings patterns
+
+---
+
+### Epic 2: Task & MessageBus API — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-007 | D5-001, D5-005 (foundation + DI) | `message_bus/message_bus.py` (MessageBus.list_tasks()), `message_bus/task.py` (Task model) | None | LOW |
+| D5-008 | D5-007 (list endpoint pattern) | `message_bus/message_bus.py` (MessageBus.get_task()) | None | LOW |
+| D5-009 | D5-007, D5-008 | `message_bus/message_bus.py` (MessageBus.send_task()), `message_bus/task.py` (TaskCreate schema) | None | MEDIUM — task creation triggers MessageBus events |
+| D5-010 | D5-007, D5-008 | `message_bus/task_status.py` (TaskStatus enum, valid transitions) | None | MEDIUM — status transition validation logic |
+| D5-011 | D5-007 | `message_bus/message_bus.py` (filtering support) | None | LOW |
+| D5-012 | D5-007 | `message_bus/message_bus.py` (receiver_id filter) | None | LOW |
+| D5-013 | D5-007 | `message_bus/message_bus.py` (aggregate statistics) | None | MEDIUM — requires new aggregation logic |
+| D5-014 | D5-007, D5-008 | `message_bus/message_bus.py` (soft delete) | None | LOW |
+
+**Epic 2 Blockers:**
+- D5-001 and D5-005 must be complete (app factory + DI providers)
+- `MessageBus` interface must be understood — check if `list_tasks()` and `get_task()` methods exist or need to be added
+
+---
+
+### Epic 3: Cost & Budget API — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-015 | D5-001, D5-005 (foundation + DI) | `core/cost_tracker.py` (CostTracker.get_summary()) | None | LOW |
+| D5-016 | D5-015 | `core/cost_tracker.py` (CostTracker.get_history()) | None | LOW |
+| D5-017 | D5-015 | `core/cost_tracker.py` (per-model cost data) | None | MEDIUM — may need to add model grouping |
+| D5-018 | D5-015 | `core/cost_tracker.py` (per-agent cost data) | None | MEDIUM — may need to add agent grouping |
+| D5-019 | D5-015 | `core/cost_tracker.py` (budget limits, current usage) | None | LOW |
+
+**Epic 3 Blockers:**
+- D5-001 and D5-005 must be complete
+- `CostTracker` API must be verified — check if summary, history, and budget methods exist
+
+---
+
+### Epic 4: Workflow API — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-020 | D5-001, D5-005 (foundation + DI) | `workflow/engine.py` (WorkflowEngine.list_workflows()), `workflow/models.py` (Workflow model) | None | LOW |
+| D5-021 | D5-020 | `workflow/engine.py` (WorkflowEngine.get_workflow()) | None | LOW |
+| D5-022 | D5-020, D5-021 | `workflow/engine.py` (WorkflowEngine.start_workflow()), `message_bus/message_bus.py` (task creation) | Epic 2 (task creation pattern) | MEDIUM — workflow start creates tasks on MessageBus |
+| D5-023 | D5-022 | `workflow/engine.py` (WorkflowEngine.get_run_status()) | None | LOW |
+| D5-024 | D5-020, D5-023 | `workflow/engine.py` (run history) | None | LOW |
+| D5-025 | D5-022, D5-023 | `workflow/engine.py` (WorkflowEngine.complete_step()), `message_bus/message_bus.py` | None | MEDIUM — step completion advances workflow |
+| D5-026 | D5-022, D5-023 | `workflow/engine.py` (cancel logic), `message_bus/message_bus.py` (cleanup) | None | MEDIUM — must clean up pending tasks |
+
+**Epic 4 Blockers:**
+- D5-001 and D5-005 must be complete
+- `WorkflowEngine` API must be verified — check if all required methods exist
+- D5-022 depends on Epic 2 pattern for task creation
+
+---
+
+### Epic 5: Memory & Knowledge API — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-027 | D5-001, D5-005 (foundation + DI) | `memory/engine.py` (MemoryEngine.search()), `memory/search.py` (search logic) | None | LOW |
+| D5-028 | D5-027 | `memory/engine.py` (MemoryEngine.list_entries()), `memory/models.py` (MemoryEntry model) | None | LOW |
+| D5-029 | D5-027 | `memory/engine.py` (stats aggregation) | None | LOW |
+| D5-030 | D5-027, D5-028 | `memory/engine.py` (MemoryEngine.add_entry()) | None | LOW |
+| D5-031 | D5-027, D5-028 | `memory/engine.py` (MemoryEngine.consolidate()), `memory/consolidation.py` | None | LOW |
+| D5-032 | D5-027, D5-028 | `memory/engine.py` (agent_id filter) | None | LOW |
+
+**Epic 5 Blockers:**
+- D5-001 and D5-005 must be complete
+- `MemoryEngine` API must be verified — check if all required methods exist
+
+---
+
+### Epic 6: Agent Registry API — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-033 | D5-001, D5-005 (foundation + DI) | `agents/registry.py` (AgentRegistry.list_agents()), `agents/base.py` (Agent model) | None | LOW |
+| D5-034 | D5-033 | `agents/registry.py` (AgentRegistry.get_agent()) | None | LOW |
+| D5-035 | D5-033 | `agents/registry.py` (department filter) | None | LOW |
+| D5-036 | D5-033 | `agents/registry.py` (hierarchy/reporting structure) | None | LOW |
+
+**Epic 6 Blockers:**
+- D5-001 and D5-005 must be complete
+- `AgentRegistry` API must be verified — check if all required methods exist
+
+---
+
+### Epic 7: WebSocket Real-Time Events — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-037 | D5-001 (app factory), D5-007 (task API pattern), Epics 2-6 (data sources) | `message_bus/message_bus.py` (event hooks), `core/cost_tracker.py` (budget events) | backend-engineer (event wiring) | HIGH — must integrate with all subsystems |
+| D5-038 | D5-037 | None (FastAPI WebSocket query params) | None | LOW |
+| D5-039 | D5-037 | `core/cost_tracker.py` (budget thresholds) | None | MEDIUM — threshold logic |
+| D5-040 | D5-037 | `workflow/engine.py` (workflow events) | None | MEDIUM — workflow event hooks |
+| D5-041 | D5-037 | None (FastAPI WebSocket lifecycle) | None | LOW |
+
+**Epic 7 Blockers:**
+- D5-001 must be complete
+- Epics 2-6 must be at least partially complete (need data sources for events)
+- `MessageBus` and `WorkflowEngine` must support event hooks/callbacks
+- **CRITICAL:** Event hook mechanism must be designed and agreed upon before WebSocket work begins
+
+---
+
+### Epic 8: CEO Dashboard Frontend — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-042 | D5-037, D5-038 (WebSocket), D5-007, D5-015, D5-020, D5-027, D5-033 (REST APIs) | Jinja2 templates, static file serving | frontend-engineer (UI/UX) | HIGH — depends on all REST APIs + WebSocket |
+| D5-043 | D5-042, D5-037, D5-007, D5-008, D5-009, D5-010 | Task board UI components | None | MEDIUM |
+| D5-044 | D5-042, D5-037, D5-015, D5-016, D5-019 | Cost chart components | None | MEDIUM |
+| D5-045 | D5-042, D5-037, D5-020, D5-023 | Workflow monitor components | None | MEDIUM |
+| D5-046 | D5-042, D5-037, D5-033, D5-034 | Agent status components | None | MEDIUM |
+| D5-047 | D5-042, D5-037, D5-027, D5-028, D5-029 | Memory panel components | None | MEDIUM |
+| D5-048 | D5-037, D5-042 | WebSocket client integration | None | LOW |
+| D5-049 | D5-042 | CSS responsive design | None | LOW |
+
+**Epic 8 Blockers:**
+- D5-037 must be complete (WebSocket endpoint)
+- All REST APIs (Epics 2-6) must be complete
+- **CRITICAL:** Dashboard cannot start until WebSocket contract is finalized
+- **CRITICAL:** Dashboard cannot start until all REST API response schemas are defined
+
+---
+
+### Epic 9: API Security & Authentication — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-050 | D5-001 (app factory) | `config/settings.py` (API_KEY setting) | None | LOW |
+| D5-051 | D5-050 | None (FastAPI dependency override) | None | LOW |
+| D5-052 | D5-001, D5-050 | `slowapi` or similar rate limiting library | None | MEDIUM — new dependency |
+| D5-053 | D5-001, D5-050 | FastAPI middleware, logging | None | LOW |
+| D5-054 | D5-001 | `config/settings.py` (CORS_ORIGINS setting) | None | LOW |
+
+**Epic 9 Blockers:**
+- D5-001 must be complete
+- `slowapi` or equivalent must be added to `pyproject.toml` for rate limiting
+- **CRITICAL:** Auth middleware must be designed early (Day 3) to avoid blocking frontend
+
+---
+
+### Epic 10: Testing & Documentation — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-055 | All Epics 1-9 (endpoints must exist) | `pytest`, `pytest-cov`, FastAPI TestClient | All engineers (test coordination) | LOW |
+| D5-056 | All Epics 1-9 | FastAPI TestClient, full request lifecycle | All engineers | LOW |
+| D5-057 | D5-037 (WebSocket endpoint) | FastAPI WebSocket test client | frontend-engineer (WS contract) | MEDIUM |
+| D5-058 | All Epics 1-9 | `locust` or similar load testing tool | None | MEDIUM — new tooling |
+| D5-059 | All Epics 1-9 | OpenAPI spec, Spectral linter | None | LOW |
+
+**Epic 10 Blockers:**
+- All endpoint code must be written before testing begins
+- `pytest-cov` must be added to dev dependencies
+- `locust` must be added to dev dependencies for load testing
+
+---
+
+### Epic 11: Deployment & DevOps — Dependencies
+
+| Story | Internal Dependencies | External Dependencies | Cross-Agent Dependencies | Risk Level |
+|-------|----------------------|----------------------|-------------------------|------------|
+| D5-060 | D5-001 (app factory), D5-002 (config) | Docker, `pyproject.toml` | None | LOW |
+| D5-061 | D5-060 | Docker Compose, `docker-compose.yml` | None | LOW |
+| D5-062 | All Epics 1-9 (tests must pass) | GitHub Actions, CI pipeline | None | LOW |
+| D5-063 | D5-001, D5-002 | Shell script, uvicorn | None | LOW |
+
+**Epic 11 Blockers:**
+- D5-001 and D5-002 must be complete
+- All tests must pass before CI pipeline is finalized
+
+---
+
+## Dependency Risk Summary
+
+| Risk Level | Count | Stories | Mitigation |
+|------------|-------|---------|------------|
+| **HIGH** | 5 | D5-037, D5-042, D5-043, D5-044, D5-045 | Prioritize early design; parallel work where possible |
+| **MEDIUM** | 18 | D5-005, D5-009, D5-010, D5-013, D5-017, D5-018, D5-022, D5-025, D5-026, D5-039, D5-040, D5-046, D5-047, D5-052, D5-057, D5-058, D5-013, D5-017 | Detailed interface specs before coding |
+| **LOW** | 40 | All others | Standard implementation |
+
+---
+
+## Critical Path Dependencies (Must Complete in Order)
+
+```
+Day 1:  D5-001 (App Factory) ──────────────────────────────────────────┐
+Day 1:  D5-002 (Config) ───────────────────────────────────────────────┤
+Day 2:  D5-005 (DI Providers) ─────────────────────────────────────────┤
+Day 2:  D5-003, D5-004 (Health/Ready) ─────────────────────────────────┤
+Day 2:  D5-006 (Exception Handlers) ───────────────────────────────────┤
+                                                                        │
+Day 3:  D5-007 (List Tasks) ───────────────────────────────────────────┤
+Day 3:  D5-050, D5-054 (Auth + CORS) ──────────────────────────────────┤
+                                                                        │
+Day 4:  D5-008 (Get Task) ─────────────────────────────────────────────┤
+Day 4:  D5-009 (Create Task) ──────────────────────────────────────────┤
+Day 4:  D5-010 (Update Status) ────────────────────────────────────────┤
+                                                                        │
+Day 5:  D5-011, D5-012, D5-013 (Task Filters + Stats) ────────────────┤
+Day 5:  D5-051 (Public Read) ──────────────────────────────────────────┤
+Day 5:  D5-037 (WebSocket Foundation) ─────────────────────────────────┤
+                                                                        │
+Day 6:  D5-015 (Cost Summary) ─────────────────────────────────────────┤
+Day 6:  D5-016 (Cost History) ─────────────────────────────────────────┤
+Day 6:  D5-052 (Rate Limiting) ────────────────────────────────────────┤
+                                                                        │
+Day 7:  D5-017, D5-018, D5-019 (Cost Filters + Budget) ───────────────┤
+Day 7:  D5-038 (WS Topic Filter) ─────────────────────────────────────┤
+                                                                        │
+Day 8:  D5-020 (List Workflows) ───────────────────────────────────────┤
+Day 8:  D5-021 (Workflow Detail) ──────────────────────────────────────┤
+Day 8:  D5-039 (Budget Alerts) ────────────────────────────────────────┤
+Day 8:  D5-053 (Request Logging) ──────────────────────────────────────┤
+                                                                        │
+Day 9:  D5-022 (Start Workflow) ───────────────────────────────────────┤
+Day 9:  D5-023 (Run Status) ───────────────────────────────────────────┤
+Day 9:  D5-040 (Workflow Events) ──────────────────────────────────────┤
+Day 9:  D5-041 (Heartbeat) ────────────────────────────────────────────┤
+                                                                        │
+Day 10: D5-024, D5-025, D5-026 (Workflow Filters + Cancel) ───────────┤
+Day 10: D5-042 (Dashboard Overview) ───────────────────────────────────┤
+Day 10: D5-060 (Dockerfile) ───────────────────────────────────────────┤
+                                                                        │
+Day 11: D5-027 (Memory Search) ────────────────────────────────────────┤
+Day 11: D5-028 (List Entries) ─────────────────────────────────────────┤
+Day 11: D5-043 (Task Board) ───────────────────────────────────────────┤
+Day 11: D5-061 (docker-compose) ───────────────────────────────────────┤
+                                                                        │
+Day 12: D5-029 (Memory Stats) ─────────────────────────────────────────┤
+Day 12: D5-030 (Record Memory) ────────────────────────────────────────┤
+Day 12: D5-044 (Cost Monitor) ─────────────────────────────────────────┤
+Day 12: D5-055 (Unit Tests) ───────────────────────────────────────────┤
+                                                                        │
+Day 13: D5-031, D5-032 (Consolidation + Agent Filter) ────────────────┤
+Day 13: D5-062 (CI Pipeline) ──────────────────────────────────────────┤
+Day 13: D5-045 (Workflow Monitor) ─────────────────────────────────────┤
+                                                                        │
+Day 14: D5-033 (List Agents) ──────────────────────────────────────────┤
+Day 14: D5-034 (Agent Detail) ─────────────────────────────────────────┤
+Day 14: D5-056 (Integration Tests) ────────────────────────────────────┤
+                                                                        │
+Day 15: D5-035, D5-036 (Agent Filters + Hierarchy) ───────────────────┤
+Day 15: D5-046 (Agent Status Panel) ───────────────────────────────────┤
+Day 15: D5-063 (Startup Script) ───────────────────────────────────────┤
+                                                                        │
+Day 16: D5-047 (Memory Panel) ─────────────────────────────────────────┤
+Day 16: D5-057 (WebSocket Tests) ──────────────────────────────────────┤
+                                                                        │
+Day 17: D5-048 (Auto-Refresh) ─────────────────────────────────────────┤
+Day 17: D5-058 (Load Tests) ───────────────────────────────────────────┤
+                                                                        │
+Day 18: D5-049 (Mobile Responsive) ────────────────────────────────────┤
+Day 18: D5-059 (OpenAPI Validation) ───────────────────────────────────┤
+                                                                        │
+Day 19-20: Final testing, bug fixes, sprint review ────────────────────┘
+```
+
+---
+
+## External Package Dependencies
+
+| Package | Required By | Action |
+|---------|-------------|--------|
+| `fastapi` | D5-001 | Add to `pyproject.toml` dependencies |
+| `uvicorn[standard]` | D5-001 | Add to `pyproject.toml` dependencies |
+| `jinja2` | D5-042 (Dashboard templates) | Add to `pyproject.toml` dependencies |
+| `python-multipart` | D5-009 (form data) | Add to `pyproject.toml` dependencies |
+| `slowapi` | D5-052 (rate limiting) | Add to `pyproject.toml` dependencies |
+| `pytest-cov` | D5-055 (coverage) | Add to `pyproject.toml` dev dependencies |
+| `locust` | D5-058 (load testing) | Add to `pyproject.toml` dev dependencies |
+| `websockets` | D5-037 (WebSocket) | Add to `pyproject.toml` dependencies |
+
+---
+
+## Subsystem Interface Dependencies
+
+| Subsystem | Module | Required Methods for API | Verified? |
+|-----------|--------|-------------------------|-----------|
+| MessageBus | `message_bus/message_bus.py` | `send_task()`, `get_task()`, `list_tasks()`, `update_task_status()` | ⚠️ Need to verify |
+| CostTracker | `core/cost_tracker.py` | `get_summary()`, `get_history()`, `get_by_model()`, `get_by_agent()`, `get_budget()` | ⚠️ Need to verify |
+| WorkflowEngine | `workflow/engine.py` | `list_workflows()`, `get_workflow()`, `start_workflow()`, `get_run_status()`, `complete_step()`, `cancel_run()` | ⚠️ Need to verify |
+| MemoryEngine | `memory/engine.py` | `search()`, `list_entries()`, `get_stats()`, `add_entry()`, `consolidate()` | ⚠️ Need to verify |
+| AgentRegistry | `agents/registry.py` | `list_agents()`, `get_agent()`, `get_hierarchy()` | ⚠️ Need to verify |
+
+**ACTION REQUIRED:** Before Sprint 5 begins, verify that all subsystem methods listed above exist. If any are missing, they must be added as prerequisite work.
+
+---
+
 ## Sprint 5 Task Assignments
 
 ### Backend Engineer (Primary: REST API)
