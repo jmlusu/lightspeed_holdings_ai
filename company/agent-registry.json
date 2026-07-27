@@ -206,6 +206,48 @@
         "permissions": [
           "read"
         ]
+      },
+      {
+        "id": "accountant",
+        "name": "Accountant",
+        "role": "Financial Accountant",
+        "type": "Specialist",
+        "department": "finance",
+        "reportsTo": "cfo",
+        "tools": [
+          "finance"
+        ],
+        "permissions": [
+          "read"
+        ]
+      },
+      {
+        "id": "recruiter",
+        "name": "Recruiter",
+        "role": "Talent Acquisition Specialist",
+        "type": "Specialist",
+        "department": "human-resources",
+        "reportsTo": "chro",
+        "tools": [
+          "planning"
+        ],
+        "permissions": [
+          "read"
+        ]
+      },
+      {
+        "id": "legal-counsel",
+        "name": "Legal Counsel",
+        "role": "Legal Advisor",
+        "type": "Specialist",
+        "department": "legal",
+        "reportsTo": "clo",
+        "tools": [
+          "legal"
+        ],
+        "permissions": [
+          "read"
+        ]
       }
     ]
   }

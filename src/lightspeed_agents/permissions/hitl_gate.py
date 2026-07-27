@@ -80,6 +80,14 @@ class HITLGate:
         if request.is_fully_approved:
             self.bus.approve_task(request.task_id)
 
+        self.memory.record_task_outcome(
+            task_id=request.task_id,
+            agent_id=approver_id,
+            content=f"Approved: {request.tool_name} [{request.tier.value}] - {note}",
+            status="approved",
+            tags=["hitl", "approved", request.tier.value],
+        )
+
         return request
 
     def reject(
@@ -98,6 +106,14 @@ class HITLGate:
         self.bus.fail_task(
             request.task_id,
             error=f"Rejected by {approver_id}: {note}",
+        )
+
+        self.memory.record_task_outcome(
+            task_id=request.task_id,
+            agent_id=approver_id,
+            content=f"Rejected: {request.tool_name} [{request.tier.value}] - {note}",
+            status="rejected",
+            tags=["hitl", "rejected", request.tier.value],
         )
 
         return request
@@ -120,13 +136,20 @@ class HITLGate:
 
         for request in self.get_pending():
             if request.expires_at:
-                expires = datetime.fromisoformat(request.expires_at)
+                expires = datetime.fromisoformat(request.expires_at).replace(tzinfo=UTC)
                 if now > expires:
                     request.status = ApprovalStatus.EXPIRED
                     self._save_request(request)
                     self.bus.fail_task(
                         request.task_id,
                         error=f"Approval expired for {request.tool_name} [{request.tier.value}]",
+                    )
+                    self.memory.record_task_outcome(
+                        task_id=request.task_id,
+                        agent_id="system",
+                        content=f"Approval expired: {request.tool_name} [{request.tier.value}]",
+                        status="expired",
+                        tags=["hitl", "expired", request.tier.value],
                     )
                     expired.append(request)
 

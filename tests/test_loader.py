@@ -15,7 +15,7 @@ def clean_registry():
 
 def test_load_agents_from_config():
     load_agents("company/agent-registry.json")
-    assert len(registry.list()) == 14
+    assert len(registry.list()) == 17
 
 
 def test_load_agents_ids():

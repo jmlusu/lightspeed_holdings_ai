@@ -1,4 +1,9 @@
 departments:
+  - name: executive
+    executive: human-ceo
+    agents:
+      - chief-of-staff
+
   - name: engineering
     executive: cto
     agents:
@@ -6,9 +11,20 @@ departments:
       - backend-engineer
       - frontend-engineer
 
+  - name: ai
+    executive: cto
+    agents:
+      - ai-engineer
+
+  - name: data
+    executive: cto
+    agents:
+      - data-engineer
+
   - name: finance
     executive: cfo
     agents:
+      - financial-analyst
       - accountant
 
   - name: operations
