@@ -3,7 +3,7 @@ from lightspeed_agents.agents.loader import load_agents
 from lightspeed_agents.providers.registry import get_provider
 from lightspeed_agents.models.resolver import ModelResolver
 from lightspeed_agents.prompts.builder import PromptBuilder
-from lightspeed_agents.memory.memory import AgentMemory
+from lightspeed_agents.memory.engine import MemoryEngine
 
 
 class AgentRunner:
@@ -12,7 +12,7 @@ class AgentRunner:
         load_agents()
         self.resolver = ModelResolver()
         self.prompt_builder = PromptBuilder()
-        self.memory_dir = memory_dir
+        self.memory = MemoryEngine(memory_dir)
 
     def run(self, agent_id: str, task: str):
 
@@ -32,13 +32,19 @@ class AgentRunner:
 
         system = self.prompt_builder.build(agent)
 
-        memory = AgentMemory(agent_id, self.memory_dir)
-        context = memory.get_context(limit=10)
+        context_entries = self.memory.recall_context(
+            query=task,
+            agent_id=agent_id,
+        )
 
         prompt = task
-        if context:
+        if context_entries:
+            context_lines = [
+                f"- {e.content[:200]}" for e in context_entries
+            ]
+            context_text = "\n".join(context_lines)
             prompt = (
-                f"Previous conversation:\n{context}\n\n"
+                f"Relevant organizational memory:\n{context_text}\n\n"
                 f"Current task:\n{task}"
             )
 
@@ -48,8 +54,14 @@ class AgentRunner:
             model=resolved.model,
         )
 
-        memory.add("user", task)
-        memory.add("assistant", response)
+        self.memory.record_task_outcome(
+            task_id=f"task-{agent_id}",
+            agent_id=agent_id,
+            content=f"Task: {task}\nResponse: {response[:500]}",
+            status="completed",
+            department=agent.department,
+            tags=[agent.department, "run"],
+        )
 
         return {
             "agent": agent.id,

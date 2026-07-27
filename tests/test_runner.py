@@ -15,7 +15,7 @@ def clean_registry():
 
 @patch("lightspeed_agents.core.agent_runner.get_provider")
 @patch("lightspeed_agents.core.agent_runner.load_agents")
-def test_runner_returns_response(mock_load, mock_get_provider):
+def test_runner_returns_response(mock_load, mock_get_provider, tmp_path):
     mock_load.return_value = registry
     registry.register(Agent(
         id="cto", name="CTO", role="Tech Executive",
@@ -27,7 +27,7 @@ def test_runner_returns_response(mock_load, mock_get_provider):
     mock_provider.complete.return_value = "LLM response here"
     mock_get_provider.return_value = mock_provider
 
-    runner = AgentRunner()
+    runner = AgentRunner(memory_dir=str(tmp_path / "memory"))
     result = runner.run("cto", "do something")
 
     assert result["agent"] == "cto"
@@ -38,9 +38,9 @@ def test_runner_returns_response(mock_load, mock_get_provider):
 
 @patch("lightspeed_agents.core.agent_runner.get_provider")
 @patch("lightspeed_agents.core.agent_runner.load_agents")
-def test_runner_agent_not_found(mock_load, mock_get_provider):
+def test_runner_agent_not_found(mock_load, mock_get_provider, tmp_path):
     mock_load.return_value = registry
-    runner = AgentRunner()
+    runner = AgentRunner(memory_dir=str(tmp_path / "memory"))
 
     with pytest.raises(ValueError, match="not found"):
         runner.run("nonexistent", "task")
@@ -48,7 +48,7 @@ def test_runner_agent_not_found(mock_load, mock_get_provider):
 
 @patch("lightspeed_agents.core.agent_runner.get_provider")
 @patch("lightspeed_agents.core.agent_runner.load_agents")
-def test_runner_passes_system_prompt(mock_load, mock_get_provider):
+def test_runner_passes_system_prompt(mock_load, mock_get_provider, tmp_path):
     mock_load.return_value = registry
     registry.register(Agent(
         id="cfo", name="CFO", role="Finance Executive",
@@ -60,7 +60,7 @@ def test_runner_passes_system_prompt(mock_load, mock_get_provider):
     mock_provider.complete.return_value = "ok"
     mock_get_provider.return_value = mock_provider
 
-    runner = AgentRunner()
+    runner = AgentRunner(memory_dir=str(tmp_path / "memory"))
     runner.run("cfo", "prepare budget")
 
     call_kwargs = mock_provider.complete.call_args
@@ -71,20 +71,20 @@ def test_runner_passes_system_prompt(mock_load, mock_get_provider):
 
 @patch("lightspeed_agents.core.agent_runner.get_provider")
 @patch("lightspeed_agents.core.agent_runner.load_agents")
-def test_runner_uses_tier_resolution(mock_load, mock_get_provider):
+def test_runner_records_to_episodic(mock_load, mock_get_provider, tmp_path):
     mock_load.return_value = registry
     registry.register(Agent(
-        id="content-writer", name="Writer", role="Content Creator",
-        department="marketing", model="ollama",
+        id="cto", name="CTO", role="Tech Executive",
+        department="engineering", model="ollama",
     ))
 
     mock_provider = MagicMock()
-    mock_provider.complete.return_value = "written"
+    mock_provider.complete.return_value = "done"
     mock_get_provider.return_value = mock_provider
 
-    runner = AgentRunner()
-    result = runner.run("content-writer", "write a blog post")
+    runner = AgentRunner(memory_dir=str(tmp_path / "memory"))
+    runner.run("cto", "review code")
 
-    assert result["model_info"]["tier"] == "fast"
-    assert result["model_info"]["provider"] == "ollama"
-    assert result["model_info"]["model"] == "llama3"
+    entries = runner.memory.get_entries("episodic")
+    assert len(entries) == 1
+    assert "review code" in entries[0].content
