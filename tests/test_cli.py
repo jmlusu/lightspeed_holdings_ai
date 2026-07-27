@@ -78,3 +78,23 @@ def test_prompts_show():
     assert result.exit_code == 0
     assert "System Prompt" in result.output
     assert "Chief Technology Officer" in result.output
+
+
+def test_tasks_send():
+    result = runner.invoke(app, ["tasks", "send", "deploy API", "--to", "cto"])
+    assert result.exit_code == 0
+    assert "sent to cto" in result.output
+
+
+def test_tasks_list_empty():
+    result = runner.invoke(app, ["tasks", "list"])
+    assert result.exit_code == 0
+
+
+def test_tasks_list_with_tasks():
+    runner.invoke(app, ["tasks", "send", "task 1", "--to", "cto"])
+    runner.invoke(app, ["tasks", "send", "task 2", "--to", "cfo"])
+    result = runner.invoke(app, ["tasks", "list"])
+    assert result.exit_code == 0
+    assert "cto" in result.output
+    assert "cfo" in result.output
