@@ -17,6 +17,7 @@ class Executor:
         memory: MemoryEngine = None,
         audit: AuditStore = None,
         agent_runner_fn: Callable = None,
+        agent_loop: object = None,
         poll_interval: int = 5,
         permission_checker: PermissionChecker = None,
         hitl_gate: object = None,
@@ -27,6 +28,7 @@ class Executor:
         self.audit = audit or AuditStore()
         self.dlq = DeadLetterQueue(self.bus)
         self.agent_runner_fn = agent_runner_fn
+        self.agent_loop = agent_loop
         self.poll_interval = poll_interval
         self._running = False
         self.permission_checker = permission_checker or PermissionChecker()
@@ -81,18 +83,21 @@ class Executor:
                 )
                 if not approved:
                     self.bus.fail_task(task.id, error=error)
-                    self.audit.record(
+                    self.audit.log_permission_check(
                         task_id=task.id,
-                        event="permission_denied",
                         agent_id=task.receiver_id,
-                        details={"tool": tool_name, "error": error},
+                        tool=tool_name,
+                        approved=False,
+                        tier=tier.value if tier else "",
+                        reason=error,
+                        correlation_id=task.id,
                     )
                     self.memory.record_task_outcome(
                         task_id=task.id,
                         agent_id=task.receiver_id,
                         content=f"Permission denied: {error}",
                         status="failed",
-                        tags=["permission_denied", tier.value],
+                        tags=["permission_denied", tier.value if tier else ""],
                     )
                     return self.bus.get_task(task.id)
 
@@ -120,7 +125,9 @@ class Executor:
                     )
                     return self.bus.get_task(task.id)
 
-            if self.agent_runner_fn:
+            if self.agent_loop:
+                result = self._execute_with_loop(task)
+            elif self.agent_runner_fn:
                 result = self.agent_runner_fn(task)
                 self.bus.complete_task(task.id, result=str(result))
                 self.audit.record(
@@ -152,6 +159,80 @@ class Executor:
                 details={"error": str(e)},
             )
             return self.bus.get_task(task.id)
+
+    def _execute_with_loop(self, task: Task) -> str:
+        model = task.metadata.get("model", "")
+        system_prompt = task.metadata.get("system_prompt", "")
+
+        loop_result = self.agent_loop.run(
+            task=task.instruction,
+            system_prompt=system_prompt,
+            agent_id=task.receiver_id,
+            task_id=task.id,
+            model=model,
+        )
+
+        for iteration in loop_result.iteration_history:
+            self.audit.log_iteration(
+                task_id=task.id,
+                agent_id=task.receiver_id,
+                iteration=iteration.iteration,
+                thought=iteration.thought,
+                action=iteration.action,
+                observation=iteration.observation,
+                correlation_id=task.id,
+            )
+
+        if loop_result.total_cost_usd > 0:
+            self.audit.log_cost(
+                task_id=task.id,
+                agent_id=task.receiver_id,
+                model=model or "unknown",
+                tokens=0,
+                cost_usd=loop_result.total_cost_usd,
+                correlation_id=task.id,
+            )
+
+        if loop_result.success:
+            self.bus.complete_task(task.id, result=loop_result.response)
+            self.audit.record(
+                task_id=task.id,
+                event="task_completed",
+                agent_id=task.receiver_id,
+                details={
+                    "result": loop_result.response[:500],
+                    "iterations": loop_result.iterations,
+                    "tool_calls": loop_result.tool_calls,
+                    "cost_usd": loop_result.total_cost_usd,
+                },
+            )
+            self.memory.record_task_outcome(
+                task_id=task.id,
+                agent_id=task.receiver_id,
+                content=(
+                    f"Completed: {task.instruction[:200]}\n"
+                    f"Result: {loop_result.response[:500]}\n"
+                    f"Iterations: {loop_result.iterations}, "
+                    f"Tool calls: {loop_result.tool_calls}"
+                ),
+                status="completed",
+            )
+        else:
+            self.bus.fail_task(task.id, error=loop_result.error)
+            self.audit.record(
+                task_id=task.id,
+                event="task_failed",
+                agent_id=task.receiver_id,
+                details={"error": loop_result.error},
+            )
+            self.memory.record_task_outcome(
+                task_id=task.id,
+                agent_id=task.receiver_id,
+                content=f"Failed: {loop_result.error}",
+                status="failed",
+            )
+
+        return loop_result.response
 
     def run_loop(self, max_ticks: int = None):
         self._running = True

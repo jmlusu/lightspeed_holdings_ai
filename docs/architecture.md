@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-LightSpeed Holdings is a corporate simulation framework where an organization is modeled as a team of AI agents. Each agent has a role, department, tools, permissions, and a reporting line. Tasks flow through a message bus, are orchestrated by workflows, enforced by permissions, and recalled from memory.
+LightSpeed Holdings is an AI Enterprise Operating System that generates, operates, and governs autonomous AI companies from configuration. The system models an organization as a team of AI agents, each with a role, department, tools, permissions, and a reporting line. Tasks flow through a message bus, are orchestrated by workflows, enforced by permissions, and recalled from memory.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -39,9 +39,68 @@ LightSpeed Holdings is a corporate simulation framework where an organization is
 
 ---
 
+## 2. Enterprise Architecture
+
+### 2.1 Company Constitution
+
+The system is governed by an AI Company Constitution that defines:
+
+**10 Foundational Principles:**
+1. Truth over Opinion
+2. Automation before Manual Work
+3. Documentation before Memory
+4. Quality before Speed
+5. Security by Design
+6. Continuous Improvement
+7. Ownership with Accountability
+8. Cost Awareness
+9. Transparency and Auditability
+10. Scalability and Resilience
+
+**Decision Order:**
+```
+human-ceo → chief-of-staff → cfo/cto/coo → department heads → specialists
+```
+
+**Escalation Protocol:**
+1. Specialist → Executive (within 15 minutes)
+2. Executive → chief-of-staff (if cross-department)
+3. chief-of-staff → human-ceo (if business-critical)
+
+### 2.2 AI Company Maturity Model
+
+| Domain | Score | Status |
+|--------|-------|--------|
+| Vision & Strategy | 98/100 | Exceptional |
+| Business Architecture | 90/100 | Strong |
+| Organizational Design | 94/100 | Excellent |
+| Enterprise Architecture | 90/100 | Strong |
+| Software Architecture | 84/100 | Good |
+| AI Platform | 72/100 | Emerging |
+| Product Readiness | 55/100 | In Progress |
+| DevOps & Operations | 48/100 | Early |
+| Governance & Security | 58/100 | Foundation |
+| Market Validation | 30/100 | Not Started |
+
+**Overall Maturity: 66/100 — Emerging AI Enterprise Platform**
+
+### 2.3 Enterprise Governance
+
+| Level | Authority | Scope |
+|-------|-----------|-------|
+| CEO | Final decision on all matters | Strategic direction, budget, production |
+| CoS | Cross-department coordination | Sprint planning, roadmap, blockers |
+| CTO | Technology decisions | Architecture, code, tools, security |
+| CFO | Budget and financial | Cost tracking, resource allocation |
+| COO | Operational decisions | Process optimization, incidents |
+| Department Heads | Department decisions | Team management, task assignment |
+| Specialists | Task-level decisions | Implementation, testing, documentation |
+
+---
+
 ## 2. Company Bootstrapping
 
-### 2.1 Agent Registry
+### 3.1 Agent Registry
 
 Agents are defined in `company/agent-registry.json`:
 
@@ -57,7 +116,9 @@ Agents are defined in `company/agent-registry.json`:
         "department": "engineering",
         "reportsTo": "lead-engineer",
         "tools": ["python"],
-        "permissions": ["edit"]
+        "permissions": ["edit"],
+        "model_tier": "standard",
+        "responsibilities": ["Backend implementation", "APIs", "database", "testing"]
       }
     ]
   }
@@ -75,26 +136,32 @@ Agents are defined in `company/agent-registry.json`:
 | `reportsTo` | Parent agent `id` (null for CEO) |
 | `tools` | Tool names this agent may use |
 | `permissions` | Permission strings (`read`, `edit`, `approve`, etc.) |
+| `model_tier` | Model tier (fast/standard/premium) |
+| `responsibilities` | List of agent responsibilities |
 
 **Loading:** `agents/loader.py` reads the JSON and populates the global `registry` (a `Registry` instance). Every CLI command and the `AgentRunner` call `load_agents()` first.
 
-### 2.2 Organizational Hierarchy
+### 3.2 Organizational Hierarchy
 
 ```
 human-ceo (executive)
 ├── chief-of-staff (executive)
 ├── cto (engineering)
+│   ├── chief-architect
 │   ├── lead-engineer
 │   │   ├── backend-engineer
 │   │   └── frontend-engineer
 │   ├── ai-engineer (ai)
-│   └── data-engineer (data)
+│   ├── data-engineer (data)
+│   └── security-engineer
 ├── cfo (finance)
-│   ├── financial-analyst
-│   └── accountant
+│   └── financial-analyst
 ├── coo (operations)
+│   ├── devops-engineer
 │   └── operations-manager
 ├── cmo (marketing)
+│   ├── product-manager
+│   ├── technical-writer
 │   └── content-writer
 ├── chro (human-resources)
 │   └── recruiter
@@ -102,27 +169,27 @@ human-ceo (executive)
     └── legal-counsel
 ```
 
-**17 agents across 9 departments.**
+**21 agents across 9 departments.**
 
-### 2.3 Departments
+### 3.3 Departments
 
 Defined in `company/departments.yaml`. 9 departments, each with an executive and agent list:
 
 | Department | Executive | Agents |
 |------------|-----------|--------|
 | executive | human-ceo | chief-of-staff |
-| engineering | cto | lead-engineer, backend-engineer, frontend-engineer |
+| engineering | cto | chief-architect, lead-engineer, backend-engineer, frontend-engineer |
 | ai | cto | ai-engineer |
 | data | cto | data-engineer |
-| finance | cfo | financial-analyst, accountant |
-| operations | coo | operations-manager |
-| marketing | cmo | content-writer |
+| finance | cfo | financial-analyst |
+| operations | coo | devops-engineer, operations-manager |
+| marketing | cmo | product-manager, technical-writer, content-writer |
 | human-resources | chro | recruiter |
 | legal | clo | legal-counsel |
 
 The PromptBuilder uses this to inject team context into system prompts.
 
-### 2.4 Model Tiers
+### 3.4 Model Tiers
 
 Defined in `company/models.yaml`. Each tier maps to a provider+model pair with a fallback chain:
 
@@ -136,15 +203,15 @@ Agent overrides map specific agents to tiers (e.g., `cto: premium`, `content-wri
 
 `ModelResolver.resolve(agent_id)` walks the override → tier → provider chain and returns a `ResolvedModel(provider, model, tier, description)`.
 
-### 2.5 KPIs
+### 3.5 KPIs
 
 Defined in `company/config/kpis.yaml`. Each department has 1–3 KPIs with targets, units, and measurement frequency. The PromptBuilder injects these into system prompts so agents know their success metrics.
 
 ---
 
-## 3. Orchestration: Task Flow
+## 4. Orchestration: Task Flow
 
-### 3.1 Message Bus
+### 4.1 Message Bus
 
 The `MessageBus` is the central task routing layer backed by `FileStore` (JSON files with atomic writes and cross-process locking).
 
@@ -170,7 +237,7 @@ PENDING → IN_PROGRESS → COMPLETED
 
 **Priority queue:** Tasks are sorted by `TaskPriority` (URGENT > HIGH > MEDIUM > LOW).
 
-### 3.2 Executor
+### 4.2 Executor
 
 The `Executor` is the task consumer loop:
 
@@ -197,7 +264,7 @@ tick():
 - `hitl_gate` — lazily created `HITLGate` for T2+ approvals
 - `agent_lookup_fn` — resolves agent_id → Agent model for permission checks
 
-### 3.3 AgentRunner
+### 4.3 AgentRunner
 
 `AgentRunner` is the LLM execution layer:
 
@@ -212,7 +279,7 @@ run(agent_id, task):
   7. return {agent, response, model_info}
 ```
 
-### 3.4 Workflow Engine
+### 4.4 Workflow Engine
 
 Workflows are YAML-defined multi-step orchestration scripts (`company/workflows.yaml`).
 
@@ -246,9 +313,9 @@ Workflows are YAML-defined multi-step orchestration scripts (`company/workflows.
 
 ---
 
-## 4. Permissions Enforcement
+## 5. Permissions Enforcement
 
-### 4.1 Tier System
+### 5.1 Tier System
 
 Five tiers of increasing sensitivity:
 
@@ -260,7 +327,7 @@ Five tiers of increasing sensitivity:
 | T3 | Dual | Two humans | docker, shell, deploy, execute |
 | T4 | Board | Board approval | legal, budget, approve, decide |
 
-### 4.2 Validation Flow
+### 5.2 Validation Flow
 
 ```
 Agent has tools: ["python", "git"]
@@ -277,7 +344,7 @@ PermissionChecker.requires_approval(agent, "python"):
   3. Return (needs_approval, tier)
 ```
 
-### 4.3 HITLGate
+### 5.3 HITLGate
 
 When a T2+ task is claimed:
 1. `HITLGate.park_task()` creates an `ApprovalRequest` and parks the task → records to memory
@@ -288,9 +355,9 @@ When a T2+ task is claimed:
 
 ---
 
-## 5. Memory System
+## 6. Memory System
 
-### 5.1 Six Memory Types
+### 6.1 Six Memory Types
 
 | Type | Purpose | Example |
 |------|---------|---------|
@@ -301,7 +368,7 @@ When a T2+ task is claimed:
 | `temporal` | Time-based patterns | "Deploy frequency increased 20%" |
 | `aggregate` | Summaries | Consolidated department metrics |
 
-### 5.2 Lifecycle
+### 6.2 Lifecycle
 
 - **Record:** Every task claim, completion, and failure writes to `episodic.json`
 - **Recall:** Before executing a task, `recall_context()` searches episodic/semantic/procedural memory
@@ -311,7 +378,7 @@ When a T2+ task is claimed:
 
 ---
 
-## 6. Prompt System
+## 7. Prompt System
 
 `PromptBuilder.build(agent)` generates a system prompt from 7 sections:
 
@@ -325,7 +392,7 @@ When a T2+ task is claimed:
 
 ---
 
-## 7. Config Alignment Rules
+## 8. Config Alignment Rules
 
 The following rules keep config files consistent:
 
@@ -336,12 +403,12 @@ The following rules keep config files consistent:
 
 ---
 
-## 8. File Layout
+## 9. File Layout
 
 ```
 company/
-├── agent-registry.json     ← 17 agent definitions
-├── departments.yaml        ← 6 department mappings
+├── agent-registry.json     ← 21 agent definitions
+├── departments.yaml        ← 9 department mappings
 ├── models.yaml             ← 3 model tiers + agent overrides
 ├── workflows.yaml          ← 4 orchestration workflows
 └── config/
@@ -351,7 +418,7 @@ src/lightspeed_agents/
 ├── agents/                 ← loader.py (reads agent-registry.json)
 ├── builder/                ← code generation for new agents
 ├── cli/commands/           ← Typer CLI subcommands
-├── core/                   ← AgentRunner (LLM execution)
+├── core/                   ← AgentLoop, ToolRunner, CostTracker, AgentRunner
 ├── memory/                 ← 6-type memory engine
 ├── message_bus/            ← MessageBus, Executor, FileStore, Audit, DLQ
 ├── models/                 ← Agent model, ModelResolver
@@ -366,12 +433,110 @@ tests/
 ├── test_workflow_*.py      ← workflow engine tests
 ├── test_engine.py          ← memory engine tests
 ├── test_message_bus.py     ← message bus tests
-└── ...                     ← 248 tests total
+├── test_cost_tracker.py    ← 11 tests for CostTracker
+├── test_tool_runner.py     ← 18 tests for ToolRunner
+├── test_agent_loop.py      ← 14 tests for AgentLoop
+├── test_audit_enhanced.py  ← 16 tests for enhanced AuditStore
+└── ...                     ← 248+ tests total
 ```
 
 ---
 
-## 9. Data Flow: End-to-End Example
+## 12. Sprint 2: Agentic Core
+
+### 12.1 AgentLoop
+
+The `AgentLoop` implements a ReAct (Reasoning + Acting) pattern for multi-turn agent execution:
+
+```
+AgentLoop.run(task):
+  1. reset_task_cost()
+  2. for each iteration (max: MAX_ITERATIONS):
+     a. Check budget (cost_tracker.check_budget())
+     b. Build prompt with task + history
+     c. Call LLM (provider.complete())
+     d. Parse response for actions
+     e. If action found:
+        - Execute via ToolRunner
+        - Add observation to history
+        - Log iteration to audit
+     f. If no action: return final response
+  3. Return max iterations exceeded error
+```
+
+**Key features:**
+- Configurable iteration limit (default: 10)
+- Budget enforcement per task
+- Tool execution with sandboxing
+- Full audit trail of iterations
+
+### 12.2 ToolRunner
+
+The `ToolRunner` provides sandboxed execution of agent tool calls:
+
+| Tool | Permission | Description |
+|------|------------|-------------|
+| read | T0 | Read file contents |
+| write | T1 | Write file contents |
+| edit | T1 | Edit file contents |
+| search | T0 | Search files by pattern |
+| grep | T0 | Search file contents |
+| python | T2 | Execute Python code |
+| git | T2 | Execute Git commands |
+
+**Safety features:**
+- Path validation (prevents directory traversal)
+- Dangerous tool blocking (rm, sudo, etc.)
+- Timeout enforcement (30s default)
+- Output size limits
+
+### 12.3 CostTracker
+
+The `CostTracker` manages LLM costs with budget enforcement:
+
+```python
+cost_tracker = CostTracker(
+    daily_budget=10.0,      # $10/day
+    task_budget=1.0,         # $1/task
+    model_pricing={
+        "gpt-4o": {"input": 0.0025, "output": 0.005},
+        "gpt-4o-mini": {"input": 0.00015, "output": 0.0006},
+    }
+)
+
+# Track costs
+cost_tracker.record_cost(
+    model="gpt-4o",
+    input_tokens=1500,
+    output_tokens=500,
+    task_id="task-123"
+)
+
+# Check budgets
+within_budget = cost_tracker.check_budget()
+summary = cost_tracker.get_summary()
+```
+
+### 12.4 Enhanced AuditStore
+
+The `AuditStore` now supports correlation-based tracing:
+
+```python
+# Log with correlation
+audit_store.log_task_claimed(task_id, agent_id, correlation_id="trace-123")
+audit_store.log_tool_call(task_id, agent_id, "python", "print('hello')", correlation_id="trace-123")
+audit_store.log_cost(task_id, agent_id, 0.025, correlation_id="trace-123")
+
+# Trace a task
+trace = audit_store.get_task_trace(task_id)
+
+# Trace a correlation
+trace = audit_store.get_correlation_trace("trace-123")
+```
+
+---
+
+## 13. Data Flow: End-to-End Example
 
 **Scenario:** CEO requests daily briefing
 
@@ -397,7 +562,7 @@ tests/
 
 ---
 
-## 10. Extensibility Points
+## 14. Extensibility Points
 
 | Extension | How |
 |-----------|-----|

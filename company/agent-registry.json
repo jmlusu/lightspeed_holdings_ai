@@ -8,12 +8,15 @@
         "type": "Executive",
         "department": "executive",
         "reportsTo": null,
-        "tools": [
-          "dashboard"
-        ],
-        "permissions": [
-          "approve",
-          "decide"
+        "tools": ["dashboard", "read", "search"],
+        "permissions": ["read", "approve", "decide"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "Final authority on all strategic decisions",
+          "Approve major architecture changes",
+          "Review and approve budget allocations",
+          "Sign off on production deployments",
+          "Resolve executive-level escalations"
         ]
       },
       {
@@ -23,13 +26,16 @@
         "type": "Executive",
         "department": "executive",
         "reportsTo": "human-ceo",
-        "tools": [
-          "planning",
-          "reporting"
-        ],
-        "permissions": [
-          "read",
-          "coordinate"
+        "tools": ["planning", "reporting", "read", "search", "write"],
+        "permissions": ["read", "edit", "coordinate"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "Coordinate cross-department initiatives",
+          "Manage sprint planning and execution",
+          "Track roadmap progress and milestones",
+          "Prepare executive briefings",
+          "Resolve blockers between departments",
+          "Maintain project documentation"
         ]
       },
       {
@@ -39,14 +45,16 @@
         "type": "Executive",
         "department": "engineering",
         "reportsTo": "human-ceo",
-        "tools": [
-          "python",
-          "git",
-          "docker"
-        ],
-        "permissions": [
-          "read",
-          "edit"
+        "tools": ["python", "git", "docker", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit", "approve"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "Technology strategy and architecture",
+          "Technical debt management",
+          "Engineering team leadership",
+          "Code review and quality standards",
+          "Vendor and tool selection",
+          "Security architecture oversight"
         ]
       },
       {
@@ -56,11 +64,15 @@
         "type": "Executive",
         "department": "finance",
         "reportsTo": "human-ceo",
-        "tools": [
-          "finance"
-        ],
-        "permissions": [
-          "read"
+        "tools": ["finance", "read", "search", "reporting"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Budget planning and tracking",
+          "LLM cost optimization",
+          "Resource allocation",
+          "Financial reporting",
+          "Cost-benefit analysis"
         ]
       },
       {
@@ -70,11 +82,15 @@
         "type": "Executive",
         "department": "operations",
         "reportsTo": "human-ceo",
-        "tools": [
-          "operations"
-        ],
-        "permissions": [
-          "read"
+        "tools": ["operations", "planning", "read", "search"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Operational excellence",
+          "Process optimization",
+          "Resource utilization",
+          "Performance monitoring",
+          "Incident management"
         ]
       },
       {
@@ -84,11 +100,33 @@
         "type": "Executive",
         "department": "marketing",
         "reportsTo": "human-ceo",
-        "tools": [
-          "marketing"
-        ],
-        "permissions": [
-          "read"
+        "tools": ["marketing", "writing", "read", "search"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Product positioning and messaging",
+          "Developer relations",
+          "Content strategy",
+          "Community building",
+          "Market research"
+        ]
+      },
+      {
+        "id": "chief-architect",
+        "name": "Chief Architect",
+        "role": "Enterprise Architect",
+        "type": "Executive",
+        "department": "engineering",
+        "reportsTo": "cto",
+        "tools": ["python", "read", "search", "write", "edit", "git"],
+        "permissions": ["read", "edit", "approve"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "System architecture design",
+          "Technology standards",
+          "Integration patterns",
+          "Scalability planning",
+          "Architecture decision records"
         ]
       },
       {
@@ -98,13 +136,15 @@
         "type": "Specialist",
         "department": "engineering",
         "reportsTo": "cto",
-        "tools": [
-          "python",
-          "git"
-        ],
-        "permissions": [
-          "read",
-          "edit"
+        "tools": ["python", "git", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "Technical implementation leadership",
+          "Code review and mentoring",
+          "Sprint task breakdown",
+          "Technical documentation",
+          "Bug triage and resolution"
         ]
       },
       {
@@ -114,11 +154,15 @@
         "type": "Specialist",
         "department": "engineering",
         "reportsTo": "lead-engineer",
-        "tools": [
-          "python"
-        ],
-        "permissions": [
-          "edit"
+        "tools": ["python", "git", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Core platform implementation",
+          "API development",
+          "Database design",
+          "Performance optimization",
+          "Unit and integration testing"
         ]
       },
       {
@@ -128,11 +172,15 @@
         "type": "Specialist",
         "department": "engineering",
         "reportsTo": "lead-engineer",
-        "tools": [
-          "javascript"
-        ],
-        "permissions": [
-          "edit"
+        "tools": ["javascript", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Dashboard implementation",
+          "CLI interface development",
+          "UI/UX design",
+          "WebSocket integration",
+          "Responsive design"
         ]
       },
       {
@@ -142,12 +190,15 @@
         "type": "Specialist",
         "department": "ai",
         "reportsTo": "cto",
-        "tools": [
-          "python",
-          "llm"
-        ],
-        "permissions": [
-          "edit"
+        "tools": ["python", "llm", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "LLM integration and routing",
+          "Prompt engineering",
+          "Memory system design",
+          "Agent loop implementation",
+          "Model evaluation and benchmarking"
         ]
       },
       {
@@ -157,12 +208,105 @@
         "type": "Specialist",
         "department": "data",
         "reportsTo": "cto",
-        "tools": [
-          "sql",
-          "python"
-        ],
-        "permissions": [
-          "edit"
+        "tools": ["sql", "python", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Data pipeline design",
+          "Knowledge graph implementation",
+          "Analytics infrastructure",
+          "Data quality monitoring",
+          "ETL automation"
+        ]
+      },
+      {
+        "id": "devops-engineer",
+        "name": "DevOps Engineer",
+        "role": "DevOps Specialist",
+        "type": "Specialist",
+        "department": "operations",
+        "reportsTo": "coo",
+        "tools": ["docker", "git", "shell", "read", "search", "write"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "CI/CD pipeline management",
+          "Container orchestration",
+          "Infrastructure automation",
+          "Monitoring and alerting",
+          "Deployment automation"
+        ]
+      },
+      {
+        "id": "security-engineer",
+        "name": "Security Engineer",
+        "role": "Security Specialist",
+        "type": "Specialist",
+        "department": "security",
+        "reportsTo": "cto",
+        "tools": ["read", "search", "git", "shell"],
+        "permissions": ["read"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Security architecture review",
+          "Permission system design",
+          "Audit trail implementation",
+          "Vulnerability assessment",
+          "Compliance monitoring"
+        ]
+      },
+      {
+        "id": "product-manager",
+        "name": "Product Manager",
+        "role": "Product Owner",
+        "type": "Specialist",
+        "department": "product",
+        "reportsTo": "chief-of-staff",
+        "tools": ["planning", "reporting", "read", "search", "write"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Product roadmap management",
+          "Feature prioritization",
+          "User story creation",
+          "Acceptance criteria definition",
+          "Customer feedback synthesis"
+        ]
+      },
+      {
+        "id": "technical-writer",
+        "name": "Technical Writer",
+        "role": "Documentation Specialist",
+        "type": "Specialist",
+        "department": "marketing",
+        "reportsTo": "cmo",
+        "tools": ["writing", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "fast",
+        "responsibilities": [
+          "API documentation",
+          "Architecture documentation",
+          "User guides",
+          "Tutorial creation",
+          "Changelog maintenance"
+        ]
+      },
+      {
+        "id": "qa-engineer",
+        "name": "QA Engineer",
+        "role": "Quality Assurance Specialist",
+        "type": "Specialist",
+        "department": "engineering",
+        "reportsTo": "lead-engineer",
+        "tools": ["python", "git", "read", "search", "write", "edit"],
+        "permissions": ["read", "edit"],
+        "model_tier": "standard",
+        "responsibilities": [
+          "Test strategy and planning",
+          "Integration test development",
+          "Performance testing",
+          "Bug verification",
+          "Quality metrics tracking"
         ]
       },
       {
@@ -172,11 +316,15 @@
         "type": "Specialist",
         "department": "finance",
         "reportsTo": "cfo",
-        "tools": [
-          "finance"
-        ],
-        "permissions": [
-          "read"
+        "tools": ["finance", "read", "search", "reporting"],
+        "permissions": ["read"],
+        "model_tier": "fast",
+        "responsibilities": [
+          "Cost analysis and forecasting",
+          "Budget tracking",
+          "ROI calculations",
+          "Financial reporting",
+          "Vendor cost comparison"
         ]
       },
       {
@@ -186,11 +334,15 @@
         "type": "Specialist",
         "department": "operations",
         "reportsTo": "coo",
-        "tools": [
-          "planning"
-        ],
-        "permissions": [
-          "read"
+        "tools": ["planning", "read", "search", "reporting"],
+        "permissions": ["read", "edit"],
+        "model_tier": "fast",
+        "responsibilities": [
+          "Process documentation",
+          "Workflow optimization",
+          "Resource scheduling",
+          "Performance monitoring",
+          "Incident tracking"
         ]
       },
       {
@@ -200,53 +352,15 @@
         "type": "Specialist",
         "department": "marketing",
         "reportsTo": "cmo",
-        "tools": [
-          "writing"
-        ],
-        "permissions": [
-          "read"
-        ]
-      },
-      {
-        "id": "accountant",
-        "name": "Accountant",
-        "role": "Financial Accountant",
-        "type": "Specialist",
-        "department": "finance",
-        "reportsTo": "cfo",
-        "tools": [
-          "finance"
-        ],
-        "permissions": [
-          "read"
-        ]
-      },
-      {
-        "id": "recruiter",
-        "name": "Recruiter",
-        "role": "Talent Acquisition Specialist",
-        "type": "Specialist",
-        "department": "human-resources",
-        "reportsTo": "chro",
-        "tools": [
-          "planning"
-        ],
-        "permissions": [
-          "read"
-        ]
-      },
-      {
-        "id": "legal-counsel",
-        "name": "Legal Counsel",
-        "role": "Legal Advisor",
-        "type": "Specialist",
-        "department": "legal",
-        "reportsTo": "clo",
-        "tools": [
-          "legal"
-        ],
-        "permissions": [
-          "read"
+        "tools": ["writing", "read", "search", "write"],
+        "permissions": ["read", "edit"],
+        "model_tier": "fast",
+        "responsibilities": [
+          "Blog post creation",
+          "Case study development",
+          "Social media content",
+          "Newsletter writing",
+          "Content calendar management"
         ]
       }
     ]
