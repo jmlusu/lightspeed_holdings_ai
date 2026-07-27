@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/lightspeed_agents/__init__.py
+src/lightspeed_agents/hello.py
+src/lightspeed_agents.egg-info/PKG-INFO
+src/lightspeed_agents.egg-info/SOURCES.txt
+src/lightspeed_agents.egg-info/dependency_links.txt
+src/lightspeed_agents.egg-info/requires.txt
+src/lightspeed_agents.egg-info/top_level.txt
+tests/test_hello.py
