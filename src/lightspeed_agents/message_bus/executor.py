@@ -7,6 +7,8 @@ from lightspeed_agents.message_bus.task_status import TaskStatus
 from lightspeed_agents.message_bus.audit import AuditStore
 from lightspeed_agents.message_bus.dead_letter import DeadLetterQueue
 from lightspeed_agents.memory.engine import MemoryEngine
+from lightspeed_agents.permissions.checker import PermissionChecker
+from lightspeed_agents.permissions.tiers import ActionTier
 
 
 class Executor:
@@ -18,6 +20,9 @@ class Executor:
         audit: AuditStore = None,
         agent_runner_fn: Callable = None,
         poll_interval: int = 5,
+        permission_checker: PermissionChecker = None,
+        hitl_gate: object = None,
+        agent_lookup_fn: Callable = None,
     ):
         self.bus = bus or MessageBus()
         self.memory = memory or MemoryEngine()
@@ -26,6 +31,15 @@ class Executor:
         self.agent_runner_fn = agent_runner_fn
         self.poll_interval = poll_interval
         self._running = False
+        self.permission_checker = permission_checker or PermissionChecker()
+        self.hitl_gate = hitl_gate
+        self.agent_lookup_fn = agent_lookup_fn
+
+    def _ensure_hitl_gate(self):
+        if self.hitl_gate is None:
+            from lightspeed_agents.permissions.hitl_gate import HITLGate
+            self.hitl_gate = HITLGate(self.bus, self.memory)
+        return self.hitl_gate
 
     def tick(self) -> list[Task]:
         processed = []
@@ -56,6 +70,52 @@ class Executor:
                 content=f"Claimed: {task.instruction[:200]}",
                 status="in_progress",
             )
+
+            tool_name = task.metadata.get("tool", task.metadata.get("tool_name", ""))
+            agent = None
+            if self.agent_lookup_fn and task.receiver_id:
+                agent = self.agent_lookup_fn(task.receiver_id)
+
+            if agent and tool_name:
+                approved, tier, error = self.permission_checker.validate_action(agent, tool_name)
+                if not approved:
+                    self.bus.fail_task(task.id, error=error)
+                    self.audit.record(
+                        task_id=task.id,
+                        event="permission_denied",
+                        agent_id=task.receiver_id,
+                        details={"tool": tool_name, "error": error},
+                    )
+                    self.memory.record_task_outcome(
+                        task_id=task.id,
+                        agent_id=task.receiver_id,
+                        content=f"Permission denied: {error}",
+                        status="failed",
+                        tags=["permission_denied", tier.value],
+                    )
+                    return self.bus.get_task(task.id)
+
+                needs_approval, tier = self.permission_checker.requires_approval(agent, tool_name)
+                if needs_approval:
+                    gate = self._ensure_hitl_gate()
+                    approval_request = gate.park_task(
+                        task_id=task.id,
+                        agent_id=task.receiver_id,
+                        tool_name=tool_name,
+                        tier=tier,
+                        instruction=task.instruction[:200],
+                    )
+                    self.audit.record(
+                        task_id=task.id,
+                        event="task_parked_approval",
+                        agent_id=task.receiver_id,
+                        details={
+                            "tool": tool_name,
+                            "tier": tier.value,
+                            "approval_request_id": approval_request.id,
+                        },
+                    )
+                    return self.bus.get_task(task.id)
 
             if self.agent_runner_fn:
                 result = self.agent_runner_fn(task)
