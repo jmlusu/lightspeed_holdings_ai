@@ -6,6 +6,7 @@ from lightspeed_agents.cli.commands.company import app as company_app
 from lightspeed_agents.cli.commands.run import app as run_app
 from lightspeed_agents.cli.commands.models import app as models_app
 from lightspeed_agents.cli.commands.prompts import app as prompts_app
+from lightspeed_agents.cli.commands.memory import app as memory_app
 
 app = typer.Typer(
     name="lightspeed",
@@ -18,6 +19,7 @@ app.add_typer(company_app, name="company", help="Build and manage the AI company
 app.add_typer(run_app, name="run", help="Run a task with an agent.")
 app.add_typer(models_app, name="models", help="View model tiers and agent overrides.")
 app.add_typer(prompts_app, name="prompts", help="Preview agent system prompts.")
+app.add_typer(memory_app, name="memory", help="View and manage agent memory.")
 
 
 @app.command()

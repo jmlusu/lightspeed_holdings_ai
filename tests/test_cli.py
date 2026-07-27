@@ -59,3 +59,22 @@ def test_models_overrides():
     assert result.exit_code == 0
     assert "cto" in result.output
     assert "premium" in result.output
+
+
+def test_memory_show_empty():
+    result = runner.invoke(app, ["memory", "show", "nonexistent-agent"])
+    assert result.exit_code == 0
+    assert "No memory entries" in result.output
+
+
+def test_memory_clear():
+    result = runner.invoke(app, ["memory", "clear", "test-agent"])
+    assert result.exit_code == 0
+    assert "Memory cleared" in result.output
+
+
+def test_prompts_show():
+    result = runner.invoke(app, ["prompts", "show", "cto"])
+    assert result.exit_code == 0
+    assert "System Prompt" in result.output
+    assert "Chief Technology Officer" in result.output
