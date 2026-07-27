@@ -1,6 +1,5 @@
 import json
 import os
-import uuid
 from datetime import datetime, UTC
 
 from lightspeed_agents.message_bus.file_store import FileStore

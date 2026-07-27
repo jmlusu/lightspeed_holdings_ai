@@ -1,7 +1,6 @@
 import json
 import re
 from dataclasses import dataclass, field
-from typing import Optional
 
 from lightspeed_agents.providers.base import LLMProvider
 from lightspeed_agents.core.tool_runner import ToolRunner, ToolPlan, ToolResult
@@ -92,6 +91,17 @@ class AgentLoop:
                     error=llm_response.error,
                 )
 
+            allowed_after, reason_after = self.cost_tracker.check_budget(task_id)
+            if not allowed_after:
+                return LoopResult(
+                    response=f"Budget exceeded: {reason_after}",
+                    iterations=iteration,
+                    total_cost_usd=self.cost_tracker._task_cost,
+                    iteration_history=iteration_history,
+                    success=False,
+                    error=reason_after,
+                )
+
             parsed = self._parse_response(llm_response.text)
             total_iterations = iteration
 
@@ -114,14 +124,18 @@ class AgentLoop:
             iteration_result.observation = self._format_tool_result(tool_result)
             iteration_history.append(iteration_result)
 
-            messages.append({
-                "role": "assistant",
-                "content": llm_response.text,
-            })
-            messages.append({
-                "role": "user",
-                "content": f"Observation: {iteration_result.observation}",
-            })
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": llm_response.text,
+                }
+            )
+            messages.append(
+                {
+                    "role": "user",
+                    "content": f"Observation: {iteration_result.observation}",
+                }
+            )
 
         if not final_response and iteration_history:
             last = iteration_history[-1]
@@ -150,7 +164,7 @@ class AgentLoop:
             f"To use a tool, respond with this exact JSON format:\n"
             f'{{"thought": "your reasoning", "action": "tool_name", '
             f'"action_input": {{"arg": "value"}}}}\n\n'
-            f'When you have the final answer, respond with:\n'
+            f"When you have the final answer, respond with:\n"
             f'{{"thought": "your reasoning", "action": "finish", '
             f'"final_answer": "your answer"}}'
         )

@@ -1,4 +1,3 @@
-import pytest
 from lightspeed_agents.permissions.tiers import ActionTier
 from lightspeed_agents.permissions.approval import ApprovalRequest, ApprovalStatus
 

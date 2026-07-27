@@ -1,4 +1,3 @@
-import pytest
 from lightspeed_agents.models.agent import Agent
 from lightspeed_agents.permissions.tiers import ActionTier
 from lightspeed_agents.permissions.checker import PermissionChecker

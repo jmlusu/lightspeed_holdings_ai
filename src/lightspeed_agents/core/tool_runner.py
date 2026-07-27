@@ -1,8 +1,6 @@
 import os
 import subprocess
-import json
 from dataclasses import dataclass, field
-
 
 DANGEROUS_TOOLS = {"execute", "shell", "deploy", "docker"}
 
@@ -84,11 +82,15 @@ class ToolRunner:
     def _read_file(self, plan: ToolPlan) -> ToolResult:
         path = plan.args.get("path", "")
         if not path:
-            return ToolResult(tool="read", success=False, output="", error="No path specified")
+            return ToolResult(
+                tool="read", success=False, output="", error="No path specified"
+            )
 
         full_path = self._resolve_path(path)
         if not self._is_safe_path(full_path):
-            return ToolResult(tool="read", success=False, output="", error="Path not allowed")
+            return ToolResult(
+                tool="read", success=False, output="", error="Path not allowed"
+            )
 
         try:
             with open(full_path, "r", encoding="utf-8") as f:
@@ -101,11 +103,15 @@ class ToolRunner:
         path = plan.args.get("path", "")
         content = plan.args.get("content", "")
         if not path:
-            return ToolResult(tool="write", success=False, output="", error="No path specified")
+            return ToolResult(
+                tool="write", success=False, output="", error="No path specified"
+            )
 
         full_path = self._resolve_path(path)
         if not self._is_safe_path(full_path):
-            return ToolResult(tool="write", success=False, output="", error="Path not allowed")
+            return ToolResult(
+                tool="write", success=False, output="", error="Path not allowed"
+            )
 
         try:
             os.makedirs(os.path.dirname(full_path), exist_ok=True)
@@ -124,17 +130,23 @@ class ToolRunner:
         old = plan.args.get("old", "")
         new = plan.args.get("new", "")
         if not path:
-            return ToolResult(tool="edit", success=False, output="", error="No path specified")
+            return ToolResult(
+                tool="edit", success=False, output="", error="No path specified"
+            )
 
         full_path = self._resolve_path(path)
         if not self._is_safe_path(full_path):
-            return ToolResult(tool="edit", success=False, output="", error="Path not allowed")
+            return ToolResult(
+                tool="edit", success=False, output="", error="Path not allowed"
+            )
 
         try:
             with open(full_path, "r", encoding="utf-8") as f:
                 content = f.read()
             if old not in content:
-                return ToolResult(tool="edit", success=False, output="", error="old text not found")
+                return ToolResult(
+                    tool="edit", success=False, output="", error="old text not found"
+                )
             content = content.replace(old, new, 1)
             with open(full_path, "w", encoding="utf-8") as f:
                 f.write(content)
@@ -146,7 +158,9 @@ class ToolRunner:
         query = plan.args.get("query", "")
         path = plan.args.get("path", ".")
         if not query:
-            return ToolResult(tool="search", success=False, output="", error="No query specified")
+            return ToolResult(
+                tool="search", success=False, output="", error="No query specified"
+            )
 
         full_path = self._resolve_path(path)
         try:
@@ -165,7 +179,9 @@ class ToolRunner:
         except FileNotFoundError:
             return self._search_fallback(query, full_path)
         except subprocess.TimeoutExpired:
-            return ToolResult(tool="search", success=False, output="", error="Search timed out")
+            return ToolResult(
+                tool="search", success=False, output="", error="Search timed out"
+            )
 
     def _search_fallback(self, query: str, path: str) -> ToolResult:
         results = []
@@ -197,7 +213,9 @@ class ToolRunner:
         path = plan.args.get("path", ".")
         full_path = self._resolve_path(path)
         if not self._is_safe_path(full_path):
-            return ToolResult(tool="list", success=False, output="", error="Path not allowed")
+            return ToolResult(
+                tool="list", success=False, output="", error="Path not allowed"
+            )
 
         try:
             entries = os.listdir(full_path)
@@ -213,7 +231,9 @@ class ToolRunner:
     def _run_python(self, plan: ToolPlan) -> ToolResult:
         code = plan.args.get("code", "")
         if not code:
-            return ToolResult(tool="python", success=False, output="", error="No code specified")
+            return ToolResult(
+                tool="python", success=False, output="", error="No code specified"
+            )
 
         try:
             result = subprocess.run(
@@ -230,12 +250,16 @@ class ToolRunner:
                 error=result.stderr[:1000] if result.returncode != 0 else "",
             )
         except subprocess.TimeoutExpired:
-            return ToolResult(tool="python", success=False, output="", error="Execution timed out")
+            return ToolResult(
+                tool="python", success=False, output="", error="Execution timed out"
+            )
 
     def _run_git(self, plan: ToolPlan) -> ToolResult:
         args = plan.args.get("args", "")
         if not args:
-            return ToolResult(tool="git", success=False, output="", error="No args specified")
+            return ToolResult(
+                tool="git", success=False, output="", error="No args specified"
+            )
 
         try:
             result = subprocess.run(
@@ -253,7 +277,9 @@ class ToolRunner:
                 error=result.stderr[:1000] if result.returncode != 0 else "",
             )
         except subprocess.TimeoutExpired:
-            return ToolResult(tool="git", success=False, output="", error="Git command timed out")
+            return ToolResult(
+                tool="git", success=False, output="", error="Git command timed out"
+            )
 
     def _execute_dangerous(self, plan: ToolPlan) -> ToolResult:
         return ToolResult(

@@ -1,4 +1,3 @@
-import pytest
 from lightspeed_agents.permissions.tiers import (
     ActionTier,
     TIER_RISK_LEVELS,

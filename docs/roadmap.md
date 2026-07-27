@@ -69,17 +69,17 @@ Build an AI Enterprise Operating System that generates, governs, orchestrates, a
 
 ---
 
-### MVP 3: Memory & Knowledge (Weeks 5-6)
+### MVP 3: Memory & Knowledge (Weeks 5-6) — IN PROGRESS
 
 **Goal:** Persistent organizational memory that enables learning.
 
-| Deliverable | Priority | Owner |
-|-------------|----------|-------|
-| Memory consolidation automation | HIGH | data-engineer |
-| Semantic search (embeddings) | HIGH | ai-engineer |
-| Knowledge graph foundation | MEDIUM | data-engineer |
-| Cross-agent memory sharing | MEDIUM | ai-engineer |
-| Memory analytics | LOW | data-engineer |
+| Deliverable | Priority | Owner | Status |
+|-------------|----------|-------|--------|
+| Memory consolidation automation | HIGH | data-engineer | 🔄 In Progress |
+| Semantic search (embeddings) | HIGH | ai-engineer | 🔄 In Progress |
+| Knowledge graph foundation | MEDIUM | data-engineer | 🔄 In Progress |
+| Cross-agent memory sharing | MEDIUM | ai-engineer | 🔄 In Progress |
+| Memory analytics | LOW | data-engineer | 🔄 In Progress |
 
 **Exit Criteria:**
 - [ ] Memory persists across sessions
@@ -87,25 +87,32 @@ Build an AI Enterprise Operating System that generates, governs, orchestrates, a
 - [ ] Consolidation runs automatically
 - [ ] Search returns relevant results
 
+**Sprint Plan:** [docs/sprint-3-plan.md](sprint-3-plan.md)
+
 ---
 
-### MVP 4: Workflow Orchestration (Weeks 7-8)
+### MVP 4: Workflow Orchestration (Weeks 7-8) — IN PLANNING
 
-**Goal:** Multi-step workflows with dependencies and approvals.
+**Goal:** Multi-step workflows with dependencies, parallel execution, and error recovery.
 
-| Deliverable | Priority | Owner |
-|-------------|----------|-------|
-| Workflow engine improvements | HIGH | lead-engineer |
-| Parallel step execution | HIGH | backend-engineer |
-| Workflow versioning | MEDIUM | backend-engineer |
-| Rollback on failure | MEDIUM | backend-engineer |
-| Workflow CLI commands | LOW | frontend-engineer |
+| Deliverable | Priority | Owner | Status |
+|-------------|----------|-------|--------|
+| Parallel step execution | HIGH | backend-engineer | 🔄 Planning |
+| Error recovery & retry | HIGH | backend-engineer | 🔄 Planning |
+| Workflow rollback & checkpoints | HIGH | backend-engineer | 🔄 Planning |
+| Workflow observability | MEDIUM | data-engineer | 🔄 Planning |
+| Cross-department coordination | MEDIUM | chief-of-staff | 🔄 Planning |
+| Enhanced CLI commands | LOW | frontend-engineer | 🔄 Planning |
 
 **Exit Criteria:**
-- [ ] Workflows execute with dependencies
-- [ ] Parallel steps work correctly
-- [ ] Failed workflows can be rolled back
-- [ ] CLI can manage workflows
+- [ ] Workflows execute independent steps in parallel
+- [ ] Failed steps auto-retry with configurable backoff
+- [ ] Failed workflows can be rolled back to checkpoint
+- [ ] Workflow observability provides real-time insights
+- [ ] Cross-department workflows coordinate reliably
+- [ ] CLI supports pause, resume, retry, inspect commands
+
+**Sprint Plan:** [docs/sprint-4-plan.md](sprint-4-plan.md)
 
 ---
 
@@ -248,6 +255,7 @@ Build an AI Enterprise Operating System that generates, governs, orchestrates, a
 | Agent | Primary Responsibility | Current Sprint |
 |-------|----------------------|----------------|
 | human-ceo | Strategic decisions, approvals | MVP 2-3 |
+| ceo-adviser | Strategic advice, business intelligence | MVP 3-5 |
 | chief-of-staff | Coordination, roadmap tracking | MVP 2-4 |
 | cto | Architecture, technical strategy | MVP 2-3 |
 | lead-engineer | Implementation leadership | MVP 2-4 |

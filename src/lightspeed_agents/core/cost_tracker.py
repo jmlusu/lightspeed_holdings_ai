@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime, UTC, date
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass

@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from lightspeed_agents.core.tool_runner import ToolRunner, ToolPlan, ToolResult, DANGEROUS_TOOLS
+from lightspeed_agents.core.tool_runner import ToolRunner, ToolPlan, DANGEROUS_TOOLS
 
 
 @pytest.fixture
@@ -38,9 +38,7 @@ class TestReadFile:
         assert "Hello, World!" in result.output
 
     def test_read_nonexistent_file(self, runner):
-        result = runner.run_plan(
-            ToolPlan(tool="read", args={"path": "nope.txt"})
-        )
+        result = runner.run_plan(ToolPlan(tool="read", args={"path": "nope.txt"}))
         assert result.success is False
         assert "No such file" in result.error or "not found" in result.error.lower()
 
@@ -113,9 +111,7 @@ class TestListDirectory:
 
 class TestPython:
     def test_run_python(self, runner):
-        result = runner.run_plan(
-            ToolPlan(tool="python", args={"code": "print(2 + 2)"})
-        )
+        result = runner.run_plan(ToolPlan(tool="python", args={"code": "print(2 + 2)"}))
         assert result.success is True
         assert "4" in result.output
 
@@ -135,9 +131,7 @@ class TestPython:
 
 class TestGit:
     def test_run_git_status(self, runner):
-        result = runner.run_plan(
-            ToolPlan(tool="git", args={"args": "status"})
-        )
+        result = runner.run_plan(ToolPlan(tool="git", args={"args": "status"}))
         assert result.success is True or "not a git" in result.error.lower()
 
 
@@ -173,14 +167,14 @@ class TestRunSteps:
 
 class TestSafety:
     def test_blocked_git_directory(self, runner):
-        result = runner.run_plan(
-            ToolPlan(tool="read", args={"path": ".git/config"})
-        )
+        result = runner.run_plan(ToolPlan(tool="read", args={"path": ".git/config"}))
         assert result.success is False
         assert "not allowed" in result.error.lower()
 
     def test_allowed_tools_filter(self, tmp_path):
         runner = ToolRunner(workspace_dir=str(tmp_path), allowed_tools=["read"])
-        result = runner.run_plan(ToolPlan(tool="write", args={"path": "x", "content": "y"}))
+        result = runner.run_plan(
+            ToolPlan(tool="write", args={"path": "x", "content": "y"})
+        )
         assert result.success is False
         assert "not in allowed" in result.error.lower()

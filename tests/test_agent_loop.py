@@ -1,8 +1,8 @@
 import pytest
 
-from lightspeed_agents.core.agent_loop import AgentLoop, LoopConfig, LoopResult, IterationResult
-from lightspeed_agents.core.tool_runner import ToolRunner, ToolPlan, ToolResult
-from lightspeed_agents.core.cost_tracker import CostTracker, BudgetConfig
+from lightspeed_agents.core.agent_loop import AgentLoop, LoopConfig
+from lightspeed_agents.core.tool_runner import ToolRunner, ToolResult
+from lightspeed_agents.core.cost_tracker import CostTracker
 from lightspeed_agents.providers.base import LLMProvider
 
 
@@ -106,15 +106,22 @@ class TestAgentLoopBudget:
         ]
         result = loop.run(task="Budget test", task_id="t4")
         assert result.success is False
-        assert "Budget exceeded" in result.error
+        assert "exceeded" in result.error.lower()
 
-    def test_budget_check_before_each_iteration(self, loop, mock_provider, cost_tracker):
-        cost_tracker.budget.task_limit_usd = 0.0000001
+    def test_budget_check_before_each_iteration(self, mock_provider, mock_runner):
+        tmp_tracker = CostTracker(results_dir="results")
+        tmp_tracker.budget.task_limit_usd = 0.00001
+        config = LoopConfig(max_iterations=5, max_tokens_per_call=512)
+        test_loop = AgentLoop(mock_provider, mock_runner, tmp_tracker, config)
         mock_provider.responses = [
-            '{"thought": "try", "action": "search", "action_input": {"query": "x"}}',
+            '{"thought": "step1", "action": "search", "action_input": {"query": "a"}}',
+            '{"thought": "step2", "action": "search", "action_input": {"query": "b"}}',
+            '{"thought": "step3", "action": "search", "action_input": {"query": "c"}}',
         ]
-        result = loop.run(task="Budget test", task_id="t5")
+        result = test_loop.run(task="Budget test", task_id="t5", model="gpt-4o")
         assert result.success is False
+        assert "exceeded" in result.error.lower()
+        assert result.iterations < 3
 
 
 class TestAgentLoopMaxIterations:
@@ -138,7 +145,7 @@ class TestAgentLoopParsing:
         assert result.iterations == 1
 
     def test_handles_malformed_json(self, loop, mock_provider):
-        mock_provider.responses = ['{invalid json']
+        mock_provider.responses = ["{invalid json"]
         result = loop.run(task="Bad JSON", task_id="t8")
         assert result.success is True
 
@@ -185,7 +192,9 @@ class TestAgentLoopToolRunner:
     def test_tool_failure_fed_back(self, loop, mock_provider):
         class FailingRunner(ToolRunner):
             def run_plan(self, plan):
-                return ToolResult(tool=plan.tool, success=False, output="", error="Permission denied")
+                return ToolResult(
+                    tool=plan.tool, success=False, output="", error="Permission denied"
+                )
 
         loop.tool_runner = FailingRunner()
         mock_provider.responses = [

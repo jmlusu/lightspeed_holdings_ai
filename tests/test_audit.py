@@ -1,6 +1,5 @@
 import pytest
 
-from lightspeed_agents.message_bus.message_bus import MessageBus
 from lightspeed_agents.message_bus.audit import AuditStore
 
 

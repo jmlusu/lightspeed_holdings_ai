@@ -1,10 +1,8 @@
-import json
 import os
-import tempfile
 
 import pytest
 
-from lightspeed_agents.core.cost_tracker import CostTracker, BudgetConfig, UsageRecord
+from lightspeed_agents.core.cost_tracker import CostTracker, BudgetConfig
 
 
 @pytest.fixture

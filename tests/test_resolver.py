@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 
 from lightspeed_agents.models.resolver import ModelResolver
 

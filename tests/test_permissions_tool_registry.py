@@ -1,6 +1,5 @@
-import pytest
 from lightspeed_agents.permissions.tiers import ActionTier
-from lightspeed_agents.permissions.tool_registry import ToolRegistry, DEFAULT_TOOL_TIERS
+from lightspeed_agents.permissions.tool_registry import ToolRegistry
 
 
 class TestToolRegistry:

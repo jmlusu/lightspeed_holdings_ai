@@ -28,6 +28,12 @@ This document defines how each agent in Light Speed Holdings operates during the
 - **Escalation:** Receives escalations from chief-of-staff
 - **Working Style:** Reviews summaries, asks clarifying questions, makes final calls
 
+#### ceo-advisor
+- **Authority:** Advisory only (no direct decision power)
+- **Scope:** Executive coaching, strategic advice, decision recommendations, governance, board preparation
+- **Reports to:** human-ceo
+- **Working Style:** Challenges assumptions, provides evidence-based recommendations, coaches leadership on strategic thinking, prepares Board Briefings aligned with Constitution
+
 #### chief-of-staff
 - **Authority:** Cross-department coordination
 - **Scope:** Sprint planning, roadmap tracking, blocker resolution

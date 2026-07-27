@@ -1,5 +1,3 @@
-import pytest
-
 from lightspeed_agents.memory.search import keyword_search
 from lightspeed_agents.memory.models import MemoryEntry
 

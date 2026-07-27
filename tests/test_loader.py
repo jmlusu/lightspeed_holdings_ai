@@ -1,6 +1,5 @@
 import json
 import pytest
-from pathlib import Path
 
 from lightspeed_agents.agents.loader import load_agents
 from lightspeed_agents.registry.registry import registry
@@ -15,7 +14,7 @@ def clean_registry():
 
 def test_load_agents_from_config():
     load_agents("company/agent-registry.json")
-    assert len(registry.list()) == 17
+    assert len(registry.list()) == 21
 
 
 def test_load_agents_ids():

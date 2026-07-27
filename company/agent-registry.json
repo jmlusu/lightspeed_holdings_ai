@@ -20,6 +20,27 @@
         ]
       },
       {
+        "id": "ceo-advisor",
+        "name": "CEO Advisor",
+        "role": "Strategic Advisory Executive & Executive Coach",
+        "type": "Executive",
+        "department": "executive",
+        "reportsTo": "human-ceo",
+        "tools": ["dashboard", "reporting", "read", "search", "planning"],
+        "permissions": ["read", "advise"],
+        "model_tier": "premium",
+        "responsibilities": [
+          "Executive coaching to improve strategic thinking",
+          "Challenge assumptions in Strategic Request workflow",
+          "Provide Decision Recommendations with evidence-based logic",
+          "Perform Market Analysis, Competitive Analysis, Scenario Planning",
+          "Prepare Board Briefings and governance materials",
+          "Create Priority Matrices for resource allocation",
+          "Identify opportunities and risks beyond immediate tasks",
+          "Support human-ceo with data-driven advisory"
+        ]
+      },
+      {
         "id": "chief-of-staff",
         "name": "Chief of Staff",
         "role": "Executive Coordinator",

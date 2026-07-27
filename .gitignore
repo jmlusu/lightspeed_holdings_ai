@@ -14,3 +14,4 @@ memory/*.json
 .venv/
 pytest_err.txt
 test_output*.txt
+results/

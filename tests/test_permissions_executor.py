@@ -7,7 +7,6 @@ from lightspeed_agents.message_bus.executor import Executor
 from lightspeed_agents.models.agent import Agent
 from lightspeed_agents.permissions.checker import PermissionChecker
 from lightspeed_agents.permissions.hitl_gate import HITLGate
-from lightspeed_agents.permissions.tiers import ActionTier
 from lightspeed_agents.registry.registry import AgentRegistry
 
 
