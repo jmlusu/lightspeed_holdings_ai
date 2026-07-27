@@ -1,12 +1,21 @@
+from collections import Counter
+
 from lightspeed_agents.memory.models import MemoryEntry
 from lightspeed_agents.memory.filestore import FileStore
 
 
 class ConsolidationConfig:
-    tick_interval: int = 50
-    entry_threshold: int = 500
-    capacity_cap: int = 2000
-    age_prune_days: int = 90
+    def __init__(
+        self,
+        tick_interval: int = 50,
+        entry_threshold: int = 500,
+        capacity_cap: int = 2000,
+        age_prune_days: int = 90,
+    ):
+        self.tick_interval = tick_interval
+        self.entry_threshold = entry_threshold
+        self.capacity_cap = capacity_cap
+        self.age_prune_days = age_prune_days
 
 
 class ConsolidationScheduler:

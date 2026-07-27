@@ -64,13 +64,13 @@ def test_models_overrides():
 def test_memory_show_empty():
     result = runner.invoke(app, ["memory", "show", "nonexistent-agent"])
     assert result.exit_code == 0
-    assert "No memory entries" in result.output
+    assert "No episodic entries" in result.output
 
 
 def test_memory_clear():
-    result = runner.invoke(app, ["memory", "clear", "test-agent"])
+    result = runner.invoke(app, ["memory", "clear"])
     assert result.exit_code == 0
-    assert "Memory cleared" in result.output
+    assert "Cleared all types memory" in result.output
 
 
 def test_prompts_show():
