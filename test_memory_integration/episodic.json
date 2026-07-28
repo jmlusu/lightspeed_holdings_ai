@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ae2ec05adf7e",
+    "content": "Recent episodic task",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-1",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.9999998693564348,
+      "decay_factor": 0.9999998986203535,
+      "last_decay_applied": "2026-07-28T05:25:31.245379+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.9999998693564348,
+    "created_at": "2026-07-28T05:25:31.156921+00:00",
+    "updated_at": "2026-07-28T05:25:31.156921+00:00"
+  }
+]

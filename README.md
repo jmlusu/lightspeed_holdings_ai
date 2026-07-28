@@ -84,23 +84,22 @@ Every agent in the company is a defined role with:
 
 ```
 human-ceo (Final authority, T4 approvals)
-├── chief-of-staff (Executive oversight, coordination)
-│   ├── chief-legal-officer (Legal & compliance, risk management)
-│   ├── cto (Technology, architecture, security)
-│   │   ├── chief-architect (System design, ADRs, scalability)
-│   │   ├── lead-engineer (Implementation, code quality, mentoring)
-│   │   │   ├── backend-engineer (Core platform, APIs, database)
-│   │   │   ├── frontend-engineer (Dashboard, CLI, UI/UX)
-│   │   │   └── qa-engineer (Test strategy, integration, performance)
-│   │   ├── ai-engineer (LLM integration, prompts, memory, agent loop)
-│   │   ├── data-engineer (Pipelines, knowledge graph, analytics)
-│   │   └── security-engineer (Permissions, audit, compliance)
-│   ├── cfo (Budget, cost tracking, resource allocation)
-│   └── coo (Operations, process optimization, incident management)
-│       └── devops-engineer (CI/CD, deployment, infrastructure, monitoring)
-│   └── product-manager (Roadmap, priorities, user stories)
-│       └── technical-writer (API docs, user guides, architecture docs)
-└── ceo-advisor (Executive coaching, strategy advisory)
+├── chief-of-staff (Coordination, sprint planning, blocker resolution)
+├── cto (Technology, architecture, security)
+│   ├── chief-architect (System design, ADRs, scalability)
+│   ├── lead-engineer (Implementation, code quality, mentoring)
+│   │   ├── backend-engineer (Core platform, APIs, database)
+│   │   ├── frontend-engineer (Dashboard, CLI, UI/UX)
+│   │   ├── qa-engineer (Test strategy, integration, performance)
+│   ├── ai-engineer (LLM integration, prompts, memory, agent loop)
+│   ├── data-engineer (Pipelines, knowledge graph, analytics)
+│   └── security-engineer (Permissions, audit, compliance)
+├── cfo (Budget, cost tracking, resource allocation)
+├── coo (Operations, process optimization, incident management)
+│   └── devops-engineer (CI/CD, deployment, infrastructure, monitoring)
+└── cmo (via product-manager → technical-writer)
+    ├── product-manager (Roadmap, priorities, user stories)
+    └── technical-writer (API docs, user guides, architecture docs)
 ```
 
 ### How It Differs from Traditional Companies
@@ -115,14 +114,7 @@ human-ceo (Final authority, T4 approvals)
 | **Memory** | Tribal knowledge, docs that rot | Persistent memory system, queryable, versioned |
 | **Accountability** | "We'll look into it" | Single owner per task, automated escalation |
 | **Scaling** | Hire, onboard, manage | Spawn agent, assign role, monitor cost |
-| **Governance** | Committees, policies, audits | Built into permission tier + audit trail + Chief Legal Officer |
-
----
-
-### Leadership Structure
-- **Chief of Staff** has direct oversight of all department heads (CTO/CFO/COO) and Legal.
-- **CEO Advisor** provides independent strategic counsel directly to the CEO.
-- **Chief Legal Officer** ensures all operations and contracts adhere to compliance standards.
+| **Governance** | Committees, policies, audits | Built into permission tier + audit trail |
 
 ### The Runtime Layer
 

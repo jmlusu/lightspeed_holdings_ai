@@ -57,8 +57,8 @@ Enable reliable multi-step workflow orchestration with parallel execution, autom
 
 | Task ID | Task | Owner | Est. Hrs | Priority | Blocked By | Cross-Epic Risk | Status |
 |---------|------|-------|----------|----------|------------|-----------------|--------|
-| W4-001 | Design parallel execution model (DAG-based) | chief-architect | 4 | P0 | INDEPENDENT | — | TODO |
-| W4-002 | Implement WorkflowDAG with topological sort | lead-engineer | 8 | P0 | **W4-001** | — | TODO |
+| W4-001 | Design parallel execution model (DAG-based) | chief-architect | 4 | P0 | INDEPENDENT | — | ✅ DONE |
+| W4-002 | Implement WorkflowDAG with topological sort | lead-engineer | 8 | P0 | **W4-001** | — | ✅ DONE |
 | W4-003 | Add parallel step dispatch to WorkflowEngine | backend-engineer | 8 | P0 | **W4-002**, [engine.py] | HIGH: W4-011 retry | TODO |
 | W4-004 | Implement parallel task claiming in Executor | backend-engineer | 6 | P0 | **W4-003**, [executor.py] | HIGH: W4-012 retry races | TODO |
 | W4-005 | Add parallel step completion synchronization | backend-engineer | 6 | P0 | **W4-004** | MED: W4-021 checkpoints | TODO |
@@ -79,8 +79,8 @@ Enable reliable multi-step workflow orchestration with parallel execution, autom
 
 | Task ID | Task | Owner | Est. Hrs | Priority | Blocked By | Cross-Epic Risk | Status |
 |---------|------|-------|----------|----------|------------|-----------------|--------|
-| W4-010 | Design retry policy model (max_retries, backoff, jitter) | lead-engineer | 3 | P0 | INDEPENDENT | — | TODO |
-| W4-011 | Implement RetryPolicy on WorkflowStep | backend-engineer | 4 | P0 | **W4-010**, [models.py] | HIGH: W4-003 parallel | TODO |
+| W4-010 | Design retry policy model (max_retries, backoff, jitter) | lead-engineer | 3 | P0 | INDEPENDENT | — | ✅ DONE |
+| W4-011 | Implement RetryPolicy on WorkflowStep | backend-engineer | 4 | P0 | **W4-010**, [models.py] | HIGH: W4-003 parallel | ✅ DONE |
 | W4-012 | Add automatic retry logic to Executor | backend-engineer | 6 | P0 | **W4-011**, [executor.py] | HIGH: W4-004 parallel races | TODO |
 | W4-013 | Implement exponential backoff with jitter | backend-engineer | 4 | P0 | **W4-010** | — | TODO |
 | W4-014 | Add retry state tracking to Task model | backend-engineer | 3 | P0 | **W4-011**, [task.py] | — | TODO |
@@ -101,8 +101,8 @@ Enable reliable multi-step workflow orchestration with parallel execution, autom
 
 | Task ID | Task | Owner | Est. Hrs | Priority | Blocked By | Cross-Epic Risk | Status |
 |---------|------|-------|----------|----------|------------|-----------------|--------|
-| W4-019 | Design checkpoint/rollback model | chief-architect | 4 | P0 | INDEPENDENT | — | TODO |
-| W4-020 | Implement WorkflowCheckpoint model | backend-engineer | 4 | P0 | **W4-019** | — | TODO |
+| W4-019 | Design checkpoint/rollback model | chief-architect | 4 | P0 | INDEPENDENT | — | ✅ DONE |
+| W4-020 | Implement WorkflowCheckpoint model | backend-engineer | 4 | P0 | **W4-019** | — | ✅ DONE |
 | W4-021 | Add checkpoint creation at step boundaries | backend-engineer | 6 | P0 | **W4-020**, [engine.py] | MED: W4-005 sync | TODO |
 | W4-022 | Implement rollback to checkpoint | backend-engineer | 8 | P0 | **W4-020, W4-021** | — | TODO |
 | W4-023 | Add compensating action support for step rollback | backend-engineer | 6 | P1 | **W4-020** | — | TODO |
@@ -123,7 +123,7 @@ Enable reliable multi-step workflow orchestration with parallel execution, autom
 
 | Task ID | Task | Owner | Est. Hrs | Priority | Blocked By | Cross-Epic Risk | Status |
 |---------|------|-------|----------|----------|------------|-----------------|--------|
-| W4-028 | Design workflow metrics model | data-engineer | 4 | P1 | INDEPENDENT | SHOULD WAIT: W4-001, W4-019 | TODO |
+| W4-028 | Design workflow metrics model | data-engineer | 4 | P1 | INDEPENDENT | SHOULD WAIT: W4-001, W4-019 | ✅ DONE |
 | W4-029 | Implement WorkflowMetrics collector | data-engineer | 6 | P1 | **W4-028** | — | TODO |
 | W4-030 | Add workflow execution tracing | data-engineer | 6 | P1 | **W4-029** | — | TODO |
 | W4-031 | Create workflow performance dashboard endpoint | frontend-engineer | 6 | P2 | **W4-029** | — | TODO |
@@ -144,7 +144,7 @@ Enable reliable multi-step workflow orchestration with parallel execution, autom
 
 | Task ID | Task | Owner | Est. Hrs | Priority | Blocked By | Cross-Epic Risk | Status |
 |---------|------|-------|----------|----------|------------|-----------------|--------|
-| W4-036 | Design cross-department workflow patterns | chief-of-staff | 4 | P1 | INDEPENDENT | SHOULD WAIT: W4-001 | TODO |
+| W4-036 | Design cross-department workflow patterns | chief-of-staff | 4 | P1 | INDEPENDENT | SHOULD WAIT: W4-001 | ✅ DONE |
 | W4-037 | Implement department-aware task routing | lead-engineer | 6 | P1 | **W4-036**, [engine.py] | MED: W4-002 DAG | TODO |
 | W4-038 | Add department handoff protocols | backend-engineer | 6 | P1 | **W4-037** | — | TODO |
 | W4-039 | Create cross-department escalation workflows | backend-engineer | 4 | P2 | **W4-037** | — | TODO |
@@ -169,8 +169,8 @@ Enable reliable multi-step workflow orchestration with parallel execution, autom
 | W4-045 | Add `workflows retry` CLI command | frontend-engineer | 3 | P2 | **W4-011, W4-012**, [workflows.py] | — | TODO |
 | W4-046 | Add `workflows inspect` CLI command (full details) | frontend-engineer | 4 | P2 | **W4-020, W4-029**, [workflows.py] | — | TODO |
 | W4-047 | Add `workflows history` CLI command | frontend-engineer | 3 | P2 | **W4-029**, [workflows.py] | — | TODO |
-| W4-048 | Improve workflow state persistence (atomic writes) | backend-engineer | 4 | P1 | INDEPENDENT | HIGH: W4-006 file locking | TODO |
-| W4-049 | Add workflow version field to models | backend-engineer | 2 | P1 | INDEPENDENT | — | TODO |
+| W4-048 | Improve workflow state persistence (atomic writes) | backend-engineer | 4 | P1 | INDEPENDENT | HIGH: W4-006 file locking | ✅ DONE |
+| W4-049 | Add workflow version field to models | backend-engineer | 2 | P1 | INDEPENDENT | — | ✅ DONE |
 | W4-050 | Write tests for new CLI commands | qa-engineer | 4 | P2 | **W4-043, W4-044, W4-045, W4-046, W4-047** | — | TODO |
 
 **Exit Criteria for Epic 6:**
@@ -230,8 +230,8 @@ W4-036 (Cross-Dept Design) ──→ W4-037 (Dept Routing) ──→ W4-038 (Han
 
 | Task | Status | Blocked By | Should Wait | Notes |
 |------|--------|------------|-------------|-------|
-| **W4-001** Design parallel execution model | TODO | INDEPENDENT | — | Design-only; no code deps |
-| **W4-002** Implement WorkflowDAG | TODO | **W4-001** | — | Needs DAG design before coding |
+| **W4-001** Design parallel execution model | ✅ DONE | INDEPENDENT | — | Design-only; no code deps |
+| **W4-002** Implement WorkflowDAG | ✅ DONE | **W4-001** | — | Needs DAG design before coding |
 | **W4-003** Add parallel dispatch to WorkflowEngine | TODO | **W4-002**, [code: engine.py] | — | Modifies existing `WorkflowEngine`; needs DAG impl |
 | **W4-004** Implement parallel task claiming in Executor | TODO | **W4-003**, [code: executor.py] | — | Modifies existing `Executor.tick()` for concurrent claims |
 | **W4-005** Add parallel step synchronization | TODO | **W4-004** | — | Join-point logic depends on parallel claiming |
@@ -248,8 +248,8 @@ W4-036 (Cross-Dept Design) ──→ W4-037 (Dept Routing) ──→ W4-038 (Han
 
 | Task | Status | Blocked By | Should Wait | Notes |
 |------|--------|------------|-------------|-------|
-| **W4-010** Design retry policy model | TODO | INDEPENDENT | — | Design-only |
-| **W4-011** Implement RetryPolicy on WorkflowStep | TODO | **W4-010**, [code: models.py] | — | Extends `WorkflowStep` model |
+| **W4-010** Design retry policy model | ✅ DONE | INDEPENDENT | — | Design-only |
+| **W4-011** Implement RetryPolicy on WorkflowStep | ✅ DONE | **W4-010**, [code: models.py] | — | Extends `WorkflowStep` model |
 | **W4-012** Add automatic retry to Executor | TODO | **W4-011**, [code: executor.py] | — | Modifies `Executor._process_task()` |
 | **W4-013** Implement exponential backoff + jitter | TODO | **W4-010** | W4-011 | Standalone utility; needs design |
 | **W4-014** Add retry state tracking to Task | TODO | **W4-011**, [code: task.py] | — | Extends `Task` model (already has `retry_count`) |
@@ -266,8 +266,8 @@ W4-036 (Cross-Dept Design) ──→ W4-037 (Dept Routing) ──→ W4-038 (Han
 
 | Task | Status | Blocked By | Should Wait | Notes |
 |------|--------|------------|-------------|-------|
-| **W4-019** Design checkpoint/rollback model | TODO | INDEPENDENT | — | Design-only |
-| **W4-020** Implement WorkflowCheckpoint model | TODO | **W4-019** | — | New file: `checkpoint.py` |
+| **W4-019** Design checkpoint/rollback model | ✅ DONE | INDEPENDENT | — | Design-only |
+| **W4-020** Implement WorkflowCheckpoint model | ✅ DONE | **W4-019** | — | New file: `checkpoint.py` |
 | **W4-021** Add checkpoint creation at step boundaries | TODO | **W4-020**, [code: engine.py] | — | Hooks into `WorkflowEngine` step transitions |
 | **W4-022** Implement rollback to checkpoint | TODO | **W4-020, W4-021** | — | Needs model + creation logic |
 | **W4-023** Add compensating action support | TODO | **W4-020** | W4-022 | Can start after model; parallel with W4-022 |
@@ -284,7 +284,7 @@ W4-036 (Cross-Dept Design) ──→ W4-037 (Dept Routing) ──→ W4-038 (Han
 
 | Task | Status | Blocked By | Should Wait | Notes |
 |------|--------|------------|-------------|-------|
-| **W4-028** Design workflow metrics model | TODO | INDEPENDENT | W4-001, W4-019 | Benefits from knowing DAG + checkpoint shapes |
+| **W4-028** Design workflow metrics model | ✅ DONE | INDEPENDENT | W4-001, W4-019 | Benefits from knowing DAG + checkpoint shapes |
 | **W4-029** Implement WorkflowMetrics collector | TODO | **W4-028** | — | New file: `metrics.py` |
 | **W4-030** Add workflow execution tracing | TODO | **W4-029** | — | Extends metrics collector with trace spans |
 | **W4-031** Create workflow performance dashboard endpoint | TODO | **W4-029** | W4-030 | Dashboard can show partial data before tracing |
@@ -303,7 +303,7 @@ W4-036 (Cross-Dept Design) ──→ W4-037 (Dept Routing) ──→ W4-038 (Han
 
 | Task | Status | Blocked By | Should Wait | Notes |
 |------|--------|------------|-------------|-------|
-| **W4-036** Design cross-department workflow patterns | TODO | INDEPENDENT | W4-001 | Benefits from DAG model for department graph |
+| **W4-036** Design cross-department workflow patterns | ✅ DONE | INDEPENDENT | W4-001 | Benefits from DAG model for department graph |
 | **W4-037** Implement department-aware task routing | TODO | **W4-036**, [code: engine.py] | — | New routing logic in engine |
 | **W4-038** Add department handoff protocols | TODO | **W4-037** | — | Depends on routing to know which dept receives |
 | **W4-039** Create cross-department escalation workflows | TODO | **W4-037** | — | Uses routing; parallel with W4-038 |
@@ -324,8 +324,8 @@ W4-036 (Cross-Dept Design) ──→ W4-037 (Dept Routing) ──→ W4-038 (Han
 | **W4-045** Add `workflows retry` CLI | TODO | **W4-012, W4-011**, [code: workflows.py] | — | Needs auto-retry logic + RetryPolicy model |
 | **W4-046** Add `workflows inspect` CLI | TODO | **W4-020, W4-029**, [code: workflows.py] | — | Needs checkpoint model + metrics for rich inspect |
 | **W4-047** Add `workflows history` CLI | TODO | **W4-029**, [code: workflows.py] | — | Needs metrics collector for execution history |
-| **W4-048** Improve workflow state persistence (atomic writes) | TODO | INDEPENDENT | [code: file_store.py] | FileStore-level change; no sprint deps |
-| **W4-049** Add workflow version field to models | TODO | INDEPENDENT | [code: models.py] | Simple field addition to `Workflow` model |
+| **W4-048** Improve workflow state persistence (atomic writes) | ✅ DONE | INDEPENDENT | [code: file_store.py] | FileStore-level change; no sprint deps |
+| **W4-049** Add workflow version field to models | ✅ DONE | INDEPENDENT | [code: models.py] | Simple field addition to `Workflow` model |
 | **W4-050** Write tests for new CLI commands | TODO | **W4-043, W4-044, W4-045, W4-046, W4-047** | — | Tests all new CLI commands |
 
 **Critical Path:** W4-021 → W4-043 → W4-044

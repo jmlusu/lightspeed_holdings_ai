@@ -3,6 +3,7 @@ import yaml
 from typing import Optional
 
 from lightspeed_agents.workflow.models import Workflow, WorkflowStep
+from lightspeed_agents.workflow.retry import RetryPolicy
 
 DEFAULT_WORKFLOWS_PATH = os.path.join(
     os.path.dirname(__file__), "..", "..", "..", "company", "workflows.yaml"
@@ -29,7 +30,12 @@ def load_workflows(path: str = None) -> list[Workflow]:
             if isinstance(step_raw, str):
                 steps.append(WorkflowStep(id=step_raw))
             else:
-                steps.append(WorkflowStep(**step_raw))
+                step_data = dict(step_raw)
+                if "retry" in step_data and isinstance(step_data["retry"], dict):
+                    step_data["retry_policy"] = RetryPolicy(**step_data.pop("retry"))
+                elif "retry" in step_data:
+                    step_data.pop("retry")
+                steps.append(WorkflowStep(**step_data))
 
         workflows.append(
             Workflow(
@@ -37,6 +43,7 @@ def load_workflows(path: str = None) -> list[Workflow]:
                 name=wf_raw.get("name", ""),
                 description=wf_raw.get("description", ""),
                 owner=wf_raw.get("owner", ""),
+                version=wf_raw.get("version", "1.0"),
                 steps=steps,
             )
         )

@@ -1,3 +1,4 @@
+import binascii
 import json
 import os
 import shutil
@@ -71,18 +72,36 @@ class FileStore:
         if not os.path.exists(path):
             return []
         with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            raw = json.load(f)
+        if isinstance(raw, dict) and "checksum" in raw and "data" in raw:
+            stored = raw["checksum"]
+            payload = json.dumps(raw["data"], indent=2, sort_keys=False)
+            computed = format(binascii.crc32(payload.encode("utf-8")) & 0xFFFFFFFF, "08x")
+            if stored != computed:
+                backup = path + ".bak"
+                if os.path.exists(backup):
+                    with open(backup, "r", encoding="utf-8") as bf:
+                        fallback = json.load(bf)
+                    if isinstance(fallback, dict) and "data" in fallback:
+                        return fallback["data"]
+                    return fallback if isinstance(fallback, list) else []
+                return []
+            return raw["data"]
+        return raw
 
     def save(self, filename: str, data: list[dict]):
         with self._lock(filename):
             path = self._path(filename)
+            payload = json.dumps(data, indent=2, sort_keys=False)
+            checksum = format(binascii.crc32(payload.encode("utf-8")) & 0xFFFFFFFF, "08x")
+            envelope = {"checksum": checksum, "data": data}
             tmp_fd, tmp_path = tempfile.mkstemp(
                 dir=self.directory,
                 suffix=".tmp",
             )
             try:
                 with os.fdopen(tmp_fd, "w", encoding="utf-8") as f:
-                    json.dump(data, f, indent=2)
+                    json.dump(envelope, f, indent=2)
                     f.flush()
                     os.fsync(f.fileno())
                 os.replace(tmp_path, path)
@@ -124,7 +143,10 @@ class FileStore:
         if not os.path.exists(path):
             return []
         with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            raw = json.load(f)
+        if isinstance(raw, dict) and "data" in raw:
+            return raw["data"]
+        return raw if isinstance(raw, list) else []
 
     def update_entry(self, filename: str, entry_id: str, updates: dict):
         with self._lock(filename):

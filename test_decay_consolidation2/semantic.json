@@ -1,0 +1,102 @@
+[
+  {
+    "id": "785c1c1c2e47",
+    "content": "Semantic fact 0",
+    "memory_type": "semantic",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "knowledge"
+    ],
+    "metadata": {
+      "importance_score": 0.9999999221742648,
+      "decay_factor": 0.9999999743802964,
+      "last_decay_applied": "2026-07-28T05:26:05.566043+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.9999999221742648,
+    "created_at": "2026-07-28T05:26:05.278631+00:00",
+    "updated_at": "2026-07-28T05:26:05.278631+00:00"
+  },
+  {
+    "id": "787a32c5a274",
+    "content": "Semantic fact 1",
+    "memory_type": "semantic",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "knowledge"
+    ],
+    "metadata": {
+      "importance_score": 0.9999999439246978,
+      "decay_factor": 0.9999999784807041,
+      "last_decay_applied": "2026-07-28T05:26:05.566043+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.9999999439246978,
+    "created_at": "2026-07-28T05:26:05.324631+00:00",
+    "updated_at": "2026-07-28T05:26:05.324631+00:00"
+  },
+  {
+    "id": "c2eb64179a3d",
+    "content": "Semantic fact 2",
+    "memory_type": "semantic",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "knowledge"
+    ],
+    "metadata": {
+      "importance_score": 0.9999999622029773,
+      "decay_factor": 0.9999999827659866,
+      "last_decay_applied": "2026-07-28T05:26:05.566043+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.9999999622029773,
+    "created_at": "2026-07-28T05:26:05.372705+00:00",
+    "updated_at": "2026-07-28T05:26:05.372705+00:00"
+  },
+  {
+    "id": "6f24f82e932c",
+    "content": "Semantic fact 3",
+    "memory_type": "semantic",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "knowledge"
+    ],
+    "metadata": {
+      "importance_score": 0.9999999808264938,
+      "decay_factor": 0.9999999881654211,
+      "last_decay_applied": "2026-07-28T05:26:05.566043+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.9999999808264938,
+    "created_at": "2026-07-28T05:26:05.433278+00:00",
+    "updated_at": "2026-07-28T05:26:05.433278+00:00"
+  },
+  {
+    "id": "54a96ee6973e",
+    "content": "Semantic fact 4",
+    "memory_type": "semantic",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "knowledge"
+    ],
+    "metadata": {
+      "importance_score": 0.9999999913570536,
+      "decay_factor": 0.9999999929236768,
+      "last_decay_applied": "2026-07-28T05:26:05.566043+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.9999999913570536,
+    "created_at": "2026-07-28T05:26:05.486658+00:00",
+    "updated_at": "2026-07-28T05:26:05.486658+00:00"
+  }
+]

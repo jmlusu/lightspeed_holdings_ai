@@ -1,0 +1,22 @@
+[
+  {
+    "id": "015bf7cbe8f1",
+    "content": "Semantic knowledge",
+    "memory_type": "semantic",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "knowledge"
+    ],
+    "metadata": {
+      "importance_score": 0.999999995587159,
+      "decay_factor": 0.999999995587159,
+      "last_decay_applied": "2026-07-28T05:25:31.251735+00:00"
+    },
+    "access_count": 0,
+    "importance_score": 0.999999995587159,
+    "created_at": "2026-07-28T05:25:31.202230+00:00",
+    "updated_at": "2026-07-28T05:25:31.202230+00:00"
+  }
+]

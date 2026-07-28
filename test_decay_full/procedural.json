@@ -1,0 +1,110 @@
+[
+  {
+    "id": "669241031149",
+    "content": "Procedure 0",
+    "memory_type": "procedural",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "procedure"
+    ],
+    "metadata": {
+      "importance_score": 0.4
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-04-29T05:26:48.656330+00:00",
+    "updated_at": "2026-07-28T05:26:48.655321+00:00"
+  },
+  {
+    "id": "11e1b974b6a2",
+    "content": "Procedure 1",
+    "memory_type": "procedural",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "procedure"
+    ],
+    "metadata": {
+      "importance_score": 0.4
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-04-29T05:26:48.689076+00:00",
+    "updated_at": "2026-07-28T05:26:48.674010+00:00"
+  },
+  {
+    "id": "63706bfb1e94",
+    "content": "Procedure 2",
+    "memory_type": "procedural",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "procedure"
+    ],
+    "metadata": {
+      "importance_score": 0.4
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-04-29T05:26:48.717814+00:00",
+    "updated_at": "2026-07-28T05:26:48.701595+00:00"
+  },
+  {
+    "id": "19cf3c7cab2c",
+    "content": "Procedure 3",
+    "memory_type": "procedural",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "procedure"
+    ],
+    "metadata": {
+      "importance_score": 0.8
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-04-29T05:26:48.735552+00:00",
+    "updated_at": "2026-07-28T05:26:48.731390+00:00"
+  },
+  {
+    "id": "aa80118b746f",
+    "content": "Procedure 4",
+    "memory_type": "procedural",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "procedure"
+    ],
+    "metadata": {
+      "importance_score": 0.8
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-04-29T05:26:48.776118+00:00",
+    "updated_at": "2026-07-28T05:26:48.757994+00:00"
+  },
+  {
+    "id": "d017dd52fada",
+    "content": "Procedure 5",
+    "memory_type": "procedural",
+    "agent_id": "agent-1",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "procedure"
+    ],
+    "metadata": {
+      "importance_score": 0.8
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-04-29T05:26:48.815308+00:00",
+    "updated_at": "2026-07-28T05:26:48.792863+00:00"
+  }
+]

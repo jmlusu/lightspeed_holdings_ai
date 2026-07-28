@@ -19,6 +19,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Per-task dependency flags (BLOCKED BY, SHOULD WAIT, Cross-Epic Risk)
   - Cross-epic dependency map with 8 inter-epic dependencies flagged
   - 5 HIGH-risk dependency conflicts identified (parallel+retry, rollback+retry ordering, pause+sync, file locking)
+- Sprint 4 Day 1 completions:
+  - W4-001: DAG parallel execution model + implementation (dag.py, 140 lines)
+  - W4-010: Retry policy model + implementation (retry.py, 95 lines)
+  - W4-028: Workflow metrics model + implementation (metrics.py, 397 lines)
+  - W4-036: Cross-department workflow patterns + implementation (cross_dept.py, 155 lines)
+  - W4-019: Checkpoint/rollback model + implementation (checkpoint.py, 165 lines)
+  - W4-002: WorkflowDAG integration (dag.py validated, already complete)
+  - W4-011: RetryPolicy integrated into WorkflowStep + YAML loader
+  - W4-020: WorkflowCheckpoint model (checkpoint.py validated, already complete)
+  - W4-048: FileStore CRC32 checksum integrity for atomic writes
+  - W4-049: Workflow version field added to models + YAML loader
+  - Design documents for all 4 design tasks
 - Updated roadmap to reflect Sprint 3 in progress, Sprint 4 in planning
 
 ### In Progress (Sprint 3 — Memory & Knowledge)

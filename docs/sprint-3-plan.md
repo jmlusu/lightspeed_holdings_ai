@@ -47,10 +47,10 @@ Enable agents to recall relevant context through semantic search and maintain or
 
 | Task ID | Task | Owner | Est. Hours | Status | Dependencies |
 |---------|------|-------|------------|--------|--------------|
-| M3-001 | Design embedding provider abstraction | ai-engineer | 4 | TODO | None — **START HERE** |
+| M3-001 | Design embedding provider abstraction | ai-engineer | 4 | IN_PROGRESS | None — **START HERE** |
 | M3-002 | Implement OpenAI embedding integration | ai-engineer | 6 | TODO | ⚠️ M3-001 |
 | M3-003 | Implement local embedding fallback (sentence-transformers) | ai-engineer | 8 | TODO | ⚠️ M3-001 |
-| M3-004 | Create VectorStore interface | ai-engineer | 4 | TODO | None — can parallel with M3-001 |
+| M3-004 | Create VectorStore interface | ai-engineer | 4 | IN_PROGRESS | None — can parallel with M3-001 |
 | M3-005 | Implement FAISS vector store | ai-engineer | 8 | TODO | ⚠️ M3-004 |
 | M3-006 | Add embedding generation to MemoryEngine | ai-engineer | 4 | TODO | 🔴 M3-001, M3-002 or M3-003 |
 | M3-007 | Implement semantic search function | ai-engineer | 6 | TODO | 🔴 M3-005, M3-006 |
@@ -89,7 +89,7 @@ Enable agents to recall relevant context through semantic search and maintain or
 
 | Task ID | Task | Owner | Est. Hours | Status | Dependencies |
 |---------|------|-------|------------|--------|--------------|
-| M3-015 | Design knowledge graph schema | data-engineer | 6 | TODO | None — **can start parallel to Epic 1** |
+| M3-015 | Design knowledge graph schema | data-engineer | 6 | IN_PROGRESS | None — **can start parallel to Epic 1** |
 | M3-016 | Implement GraphNode and GraphEdge models | data-engineer | 4 | TODO | ⚠️ M3-015 |
 | M3-017 | Create KnowledgeGraph class | data-engineer | 8 | TODO | 🔴 M3-016 |
 | M3-018 | Implement relationship extraction from memories | ai-engineer | 8 | TODO | 🔴 M3-017, M3-001 (embedding abstraction for entity similarity) |
@@ -110,7 +110,7 @@ Enable agents to recall relevant context through semantic search and maintain or
 
 | Task ID | Task | Owner | Est. Hours | Status | Dependencies |
 |---------|------|-------|------------|--------|--------------|
-| M3-022 | Design memory sharing protocol | lead-engineer | 4 | TODO | None — can start parallel to other epics |
+| M3-022 | Design memory sharing protocol | lead-engineer | 4 | IN_PROGRESS | None — can start parallel to other epics |
 | M3-023 | Implement memory scope (private/shared/global) | backend-engineer | 6 | TODO | 🔴 M3-022 |
 | M3-024 | Add agent-specific memory filtering | backend-engineer | 4 | TODO | ⚠️ M3-023 |
 | M3-025 | Create memory access controls | security-engineer | 4 | TODO | ⚠️ M3-023 (scope definition needed) |
@@ -130,7 +130,7 @@ Enable agents to recall relevant context through semantic search and maintain or
 
 | Task ID | Task | Owner | Est. Hours | Status | Dependencies |
 |---------|------|-------|------------|--------|--------------|
-| M3-028 | Create memory usage metrics collector | data-engineer | 4 | TODO | None — can start parallel |
+| M3-028 | Create memory usage metrics collector | data-engineer | 4 | IN_PROGRESS | None — can start parallel |
 | M3-029 | Implement memory quality scoring | data-engineer | 4 | TODO | ⚠️ M3-028 |
 | M3-030 | Add memory retrieval performance tracking | data-engineer | 3 | TODO | ⚠️ M3-028 |
 | M3-031 | Create memory analytics dashboard endpoint | frontend-engineer | 4 | TODO | 🔴 M3-028, M3-029, M3-030 |

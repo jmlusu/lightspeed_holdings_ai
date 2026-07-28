@@ -1,0 +1,71 @@
+[
+  {
+    "id": "418172ad5b33",
+    "content": "Top tags: task(1), completed(1), knowledge(1)",
+    "memory_type": "aggregate",
+    "agent_id": "",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "stats",
+      "tags"
+    ],
+    "metadata": {
+      "top_tags": {
+        "task": 1,
+        "completed": 1,
+        "knowledge": 1
+      }
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-28T05:25:31.276786+00:00",
+    "updated_at": "2026-07-28T05:25:31.276786+00:00"
+  },
+  {
+    "id": "f2066efc49ff",
+    "content": "Most active agents: agent-1(2)",
+    "memory_type": "aggregate",
+    "agent_id": "",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "stats",
+      "agents"
+    ],
+    "metadata": {
+      "top_agents": {
+        "agent-1": 2
+      }
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-28T05:25:31.276786+00:00",
+    "updated_at": "2026-07-28T05:25:31.276786+00:00"
+  },
+  {
+    "id": "2ea695bb7688",
+    "content": "Entry counts: {'episodic': 1, 'semantic': 1, 'procedural': 0, 'relational': 0, 'temporal': 0}",
+    "memory_type": "aggregate",
+    "agent_id": "",
+    "task_id": "",
+    "department": "",
+    "tags": [
+      "stats",
+      "counts"
+    ],
+    "metadata": {
+      "counts": {
+        "episodic": 1,
+        "semantic": 1,
+        "procedural": 0,
+        "relational": 0,
+        "temporal": 0
+      }
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-28T05:25:31.276786+00:00",
+    "updated_at": "2026-07-28T05:25:31.276786+00:00"
+  }
+]

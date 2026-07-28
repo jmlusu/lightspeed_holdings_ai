@@ -1,0 +1,202 @@
+[
+  {
+    "id": "0a246c7b883b",
+    "content": "Episodic task 0",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-0",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.2
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.210349+00:00",
+    "updated_at": "2026-07-28T05:26:48.208498+00:00"
+  },
+  {
+    "id": "bcf07b699901",
+    "content": "Episodic task 1",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-1",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.2
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.231865+00:00",
+    "updated_at": "2026-07-28T05:26:48.218057+00:00"
+  },
+  {
+    "id": "ac980a1aa112",
+    "content": "Episodic task 2",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-2",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.2
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.256756+00:00",
+    "updated_at": "2026-07-28T05:26:48.241702+00:00"
+  },
+  {
+    "id": "f637dc4b5a1f",
+    "content": "Episodic task 3",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-3",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.2
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.283207+00:00",
+    "updated_at": "2026-07-28T05:26:48.265429+00:00"
+  },
+  {
+    "id": "42068e813d57",
+    "content": "Episodic task 4",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-4",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.2
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.304232+00:00",
+    "updated_at": "2026-07-28T05:26:48.294257+00:00"
+  },
+  {
+    "id": "0e426f7497e8",
+    "content": "Episodic task 5",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-5",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.85
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.322410+00:00",
+    "updated_at": "2026-07-28T05:26:48.320309+00:00"
+  },
+  {
+    "id": "9f581ff64486",
+    "content": "Episodic task 6",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-6",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.85
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.354047+00:00",
+    "updated_at": "2026-07-28T05:26:48.345050+00:00"
+  },
+  {
+    "id": "1f3f1807efb9",
+    "content": "Episodic task 7",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-7",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.85
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.372617+00:00",
+    "updated_at": "2026-07-28T05:26:48.367738+00:00"
+  },
+  {
+    "id": "aeeb9b7513d6",
+    "content": "Episodic task 8",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-8",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.85
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.403398+00:00",
+    "updated_at": "2026-07-28T05:26:48.394171+00:00"
+  },
+  {
+    "id": "73915a079ffe",
+    "content": "Episodic task 9",
+    "memory_type": "episodic",
+    "agent_id": "agent-1",
+    "task_id": "task-9",
+    "department": "",
+    "tags": [
+      "task",
+      "completed"
+    ],
+    "metadata": {
+      "status": "completed",
+      "importance_score": 0.85
+    },
+    "access_count": 0,
+    "importance_score": 1.0,
+    "created_at": "2026-07-13T05:26:48.433259+00:00",
+    "updated_at": "2026-07-28T05:26:48.417397+00:00"
+  }
+]

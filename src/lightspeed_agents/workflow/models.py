@@ -1,8 +1,11 @@
 import enum
 import uuid
 from datetime import datetime, UTC
+from typing import Optional
 
 from pydantic import BaseModel, Field
+
+from lightspeed_agents.workflow.retry import RetryPolicy
 
 
 class WorkflowStepStatus(str, enum.Enum):
@@ -33,6 +36,8 @@ class WorkflowStep(BaseModel):
     tier: str = "T0"
     depends_on: list[str] = []
     tags: list[str] = []
+    compensating_action: str = ""
+    retry_policy: Optional[RetryPolicy] = None
     status: WorkflowStepStatus = WorkflowStepStatus.PENDING
     task_id: str = ""
     result: str = ""
@@ -48,6 +53,7 @@ class Workflow(BaseModel):
     name: str = ""
     description: str = ""
     owner: str = ""
+    version: str = "1.0"
     steps: list[WorkflowStep] = []
 
 
