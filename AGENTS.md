@@ -35,33 +35,27 @@ This document defines how each agent in Light Speed Holdings operates during the
 - **Working Style:** Challenges assumptions, provides evidence-based recommendations, coaches leadership on strategic thinking, prepares Board Briefings aligned with Constitution
 
 #### chief-of-staff
-- **Authority:** Cross-department coordination and executive oversight
-- **Scope:** Sprint planning, roadmap tracking, blocker resolution, oversight of CTO/CFO/COO/Legal
+- **Authority:** Cross-department coordination
+- **Scope:** Sprint planning, roadmap tracking, blocker resolution
 - **Reports to:** human-ceo
-- **Working Style:** Coordinates between agents, prepares briefings, tracks progress, manages executive team
-
-#### chief-legal-officer
-- **Authority:** Legal and compliance decisions
-- **Scope:** Contracts, compliance, risk management, regulatory adherence
-- **Reports to:** chief-of-staff
-- **Working Style:** Reviews legal risk, ensures compliance, manages contracts, advises on regulatory matters
+- **Working Style:** Coordinates between agents, prepares briefings, tracks progress
 
 #### cto
 - **Authority:** Technology decisions within department
 - **Scope:** Architecture, code standards, tool selection, security
-- **Reports to:** chief-of-staff
+- **Reports to:** human-ceo
 - **Working Style:** Reviews technical decisions, guides architecture, mentors engineers
 
 #### cfo
 - **Authority:** Budget and financial decisions
 - **Scope:** Cost tracking, resource allocation, financial reporting
-- **Reports to:** chief-of-staff
+- **Reports to:** human-ceo
 - **Working Style:** Monitors costs, optimizes budgets, provides financial analysis
 
 #### coo
 - **Authority:** Operational decisions
 - **Scope:** Process optimization, resource utilization, incident management
-- **Reports to:** chief-of-staff
+- **Reports to:** human-ceo
 - **Working Style:** Monitors operations, optimizes processes, manages incidents
 
 ---
@@ -133,7 +127,7 @@ This document defines how each agent in Light Speed Holdings operates during the
 #### technical-writer
 - **Authority:** Documentation decisions
 - **Scope:** API docs, user guides, architecture docs
-- **Reports to:** cmo
+- **Reports to:** product-manager
 - **Working Style:** Writes documentation, creates tutorials, maintains changelog
 
 #### qa-engineer
